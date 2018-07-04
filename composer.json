@@ -1,7 +1,7 @@
 {
     "name": "ttek-plg/mailog",
     "type": "ttek-plugin",
-    "description": "Tk2 lib mail loging plugin",
+    "description": "Tk2 lib mail log plugin",
     "keywords":  [
         "tropotek",
         "plugin",

@@ -24,7 +24,7 @@ class Plugin extends \Tk\Plugin\Iface
      */
     static function getInstance()
     {
-        return \App\Config::getInstance()->getPluginFactory()->getPlugin('sample');
+        return \App\Config::getInstance()->getPluginFactory()->getPlugin('mailog');
     }
 
 
@@ -40,11 +40,6 @@ class Plugin extends \Tk\Plugin\Iface
     function doInit()
     {
         include dirname(__FILE__) . '/config.php';
-
-        // Register the plugin for the different client areas if they are to be enabled/disabled/configured by those roles.
-        $this->getPluginFactory()->registerZonePlugin($this, self::ZONE_INSTITUTION);
-        $this->getPluginFactory()->registerZonePlugin($this, self::ZONE_COURSE_PROFILE);
-        $this->getPluginFactory()->registerZonePlugin($this, self::ZONE_COURSE);
 
         /** @var Dispatcher $dispatcher */
         $dispatcher = \App\Config::getInstance()->getEventDispatcher();
@@ -65,8 +60,8 @@ class Plugin extends \Tk\Plugin\Iface
 
         // Init Settings
         $data = \Tk\Db\Data::create($this->getName());
-        $data->set('plugin.title', 'EMS III Example Plugin');
-        $data->set('plugin.email', 'null@unimelb.edu.au');
+        $data->set('plugin.title', '');
+        $data->set('plugin.email', '');
         $data->save();
     }
 
@@ -110,23 +105,6 @@ class Plugin extends \Tk\Plugin\Iface
         $data->save();
     }
 
-    /**
-     * Get the course settings URL, if null then there is none
-     *
-     * @return string|\Tk\Uri|null
-     */
-    public function getZoneSettingsUrl($zoneName)
-    {
-        switch ($zoneName) {
-            case self::ZONE_INSTITUTION:
-                return \Tk\Uri::create('/sample/institutionSettings.html');
-            case self::ZONE_COURSE_PROFILE:
-                return \Tk\Uri::create('/sample/courseProfileSettings.html');
-            case self::ZONE_COURSE:
-                return \Tk\Uri::create('/sample/courseSettings.html');
-        }
-        return null;
-    }
 
     /**
      * @return \Tk\Uri

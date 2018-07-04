@@ -16,14 +16,9 @@ use Ml\Plugin;
 class ExampleHandler implements Subscriber
 {
 
-    private $zoneName = '';
-    private $zoneId = 0;
 
-
-    public function __construct($zoneName, $zoneId)
+    public function __construct()
     {
-        $this->zoneName = $zoneName;
-        $this->zoneId = (int)$zoneId;
     }
 
 
@@ -51,7 +46,6 @@ class ExampleHandler implements Subscriber
     {
         $plugin = Plugin::getInstance();
         //$config = $plugin->getConfig();
-        \Tk\Log::info($plugin->getName() . ': onControllerAccess(\''.$this->zoneName.'\', '.$this->zoneId.') ');
 
     }
 
@@ -64,8 +58,7 @@ class ExampleHandler implements Subscriber
     public function onControllerShow(Event $event)
     {
         $plugin = Plugin::getInstance();
-        $config = $plugin->getConfig();
-        $config->getLog()->info($plugin->getName() . ': onControllerAccess(\''.$this->zoneName.'\', '.$this->zoneId.') ');
+        //$config = $plugin->getConfig();
     }
 
 

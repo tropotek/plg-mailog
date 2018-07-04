@@ -1,5 +1,5 @@
 <?php
-namespace Tk\Listener;
+namespace Ml\Listener;
 
 use Tk\Event\Subscriber;
 use Ml\Plugin;
@@ -30,24 +30,7 @@ class SetupHandler implements Subscriber
         $dispatcher = $config->getEventDispatcher();
         $plugin = Plugin::getInstance();
 
-
-        if (class_exists('/Uni/Config') && $config instanceof \Uni\Config) {
-            $institution = $config->getInstitution();
-            if ($institution && $plugin->isZonePluginEnabled(Plugin::ZONE_INSTITUTION, $institution->getId())) {
-                \Tk\Log::debug($plugin->getName() . ': Sample init client plugin stuff: ' . $institution->name);
-                $dispatcher->addSubscriber(new \Ml\Listener\ExampleHandler(Plugin::ZONE_INSTITUTION, $institution->getId()));
-            }
-            $course = $config->getCourse();
-            if ($course && $plugin->isZonePluginEnabled(Plugin::ZONE_COURSE, $course->getId())) {
-                \Tk\Log::debug($plugin->getName() . ': Sample init course plugin stuff: ' . $course->name);
-                $dispatcher->addSubscriber(new \Ml\Listener\ExampleHandler(Plugin::ZONE_COURSE, $course->getId()));
-            }
-            $profile = $config->getProfile();
-            if ($profile && $plugin->isZonePluginEnabled(Plugin::ZONE_COURSE_PROFILE, $profile->getId())) {
-                \Tk\Log::debug($plugin->getName() . ': Sample init course profile plugin stuff: ' . $profile->name);
-                $dispatcher->addSubscriber(new \Ml\Listener\ExampleHandler(Plugin::ZONE_COURSE_PROFILE, $profile->getId()));
-            }
-        }
+        $dispatcher->addSubscriber(new \Ml\Listener\ExampleHandler());
 
     }
 
