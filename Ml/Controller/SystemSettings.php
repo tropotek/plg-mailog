@@ -51,8 +51,12 @@ class SystemSettings extends Iface
         $this->form = $this->getConfig()->createForm('systemSettings');
         $this->form->setRenderer($this->getConfig()->createFormRenderer($this->form));
 
-        $this->form->addField(new Field\Input('plugin.title'))->setLabel('Site Title')->setRequired(true);
-        $this->form->addField(new Field\Input('plugin.email'))->setLabel('Site Email')->setRequired(true);
+        // TODO: What if they have a menu object?????
+        $this->form->addField(new Field\Input('plugin.menu.var'))->setLabel('Menu Var')
+            ->setRequired(true)->setNotes('Set the template var where the mail log menu items will be appended to in the page template');
+
+        $this->form->addField(new Field\Textarea('plugin.menu.content'))->setLabel('Menu Item')
+            ->setRequired(true)->setNotes('The content for the menu');
         
         $this->form->addField(new Event\Button('update', array($this, 'doSubmit')));
         $this->form->addField(new Event\Button('save', array($this, 'doSubmit')));

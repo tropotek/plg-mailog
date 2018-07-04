@@ -43,7 +43,9 @@ class Plugin extends \Tk\Plugin\Iface
 
         /** @var Dispatcher $dispatcher */
         $dispatcher = \App\Config::getInstance()->getEventDispatcher();
-        $dispatcher->addSubscriber(new \Ml\Listener\SetupHandler());
+        $dispatcher->addSubscriber(new \Ml\Listener\MailLogHandler());
+        $dispatcher->addSubscriber(new \Ml\Listener\MenuHandler());
+
     }
 
     /**
@@ -58,10 +60,15 @@ class Plugin extends \Tk\Plugin\Iface
     {
         // TODO: Implement doActivate() method.
 
+        $db = $this->getConfig()->getDb();
+        $migrate = new \Tk\Util\SqlMigrate($db);
+        $migrate->setTempPath($this->getConfig()->getTempPath());
+        $migrate->migrate(dirname(__FILE__) . '/sql');
+
         // Init Settings
-        $data = \Tk\Db\Data::create($this->getName());
-        $data->set('plugin.title', '');
-        $data->set('plugin.email', '');
+        $data = $this->getData();
+        $data->set('plugin.menu.var', 'system-menu');
+        $data->set('plugin.menu.content', '<li><a href="/admin/mailLogManager.html"><i class="fa fa-envelope-o fa-fw"></i> Email Log</a></li>');
         $data->save();
     }
 
@@ -75,7 +82,8 @@ class Plugin extends \Tk\Plugin\Iface
      * @param string $oldVersion
      * @param string $newVersion
      */
-    function doUpgrade($oldVersion, $newVersion) {
+    function doUpgrade($oldVersion, $newVersion)
+    {
         // Init Plugin Settings
 //        $config = \Tk\Config::getInstance();
 //        $db = \App\Factory::getDb();
@@ -97,12 +105,24 @@ class Plugin extends \Tk\Plugin\Iface
      */
     function doDeactivate()
     {
-        // TODO: Implement doDeactivate() method.
-        
-        // Delete any setting in the DB
-        $data = \Tk\Db\Data::create($this->getName());
-        $data->clear();
-        $data->save();
+        $db = $this->getConfig()->getDb();
+
+        // Remove migration track
+        $sql = sprintf('DELETE FROM %s WHERE %s LIKE %s', $db->quoteParameter(\Tk\Util\SqlMigrate::$DB_TABLE), $db->quoteParameter('path'),
+            $db->quote('/plugin/' . $this->getName().'/%'));
+        $db->query($sql);
+
+        // Clear the data table of all plugin data
+        $sql = sprintf('DELETE FROM %s WHERE %s LIKE %s', $db->quoteParameter(\Tk\Db\Data::$DB_TABLE), $db->quoteParameter('fkey'),
+            $db->quote($this->getName().'%'));
+        $db->query($sql);
+        // OR
+//        $data = \Tk\Db\Data::create($this->getName());
+//        $data->clear();
+//        $data->save();
+
+        $this->getConfig()->getDb()->query('DROP TABLE mail_log');
+
     }
 
 
@@ -111,7 +131,7 @@ class Plugin extends \Tk\Plugin\Iface
      */
     public function getSettingsUrl()
     {
-        return \Tk\Uri::create('/sample/adminSettings.html');
+        return \Tk\Uri::create('/mailog/adminSettings.html');
     }
 
 }

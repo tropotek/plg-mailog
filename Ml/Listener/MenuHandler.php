@@ -2,36 +2,53 @@
 namespace Ml\Listener;
 
 use Tk\Event\Subscriber;
+use Tk\Event\Event;
 use Ml\Plugin;
 
 /**
  * @author Michael Mifsud <info@tropotek.com>
- * @link http://www.tropotek.com/
+ * @see http://www.tropotek.com/
  * @license Copyright 2015 Michael Mifsud
  */
-class SetupHandler implements Subscriber
+class MenuHandler implements Subscriber
 {
 
     /**
-     * @param \Tk\Event\GetResponseEvent $event
+     * @var \App\Controller\Iface
+     */
+    protected $controller = null;
+
+
+    /**
+     * @param Event $event
+     */
+    public function onControllerInit(Event $event)
+    {
+        /** @var \App\Controller\Iface $controller */
+        $this->controller = $event->get('controller');
+    }
+
+    /**
+     * Check the user has access to this controller
+     *
+     * @param Event $event
+     * @throws \Dom\Exception
      * @throws \Tk\Db\Exception
      * @throws \Tk\Exception
      */
-    public function onRequest(\Tk\Event\GetResponseEvent $event)
+    public function onControllerShow(Event $event)
     {
-        /* NOTE:
-         *  If you require the Institution object for an event
-         *  be sure to subscribe events here.
-         *  As any events fired before this event do not have access to
-         *  the institution object, unless you manually save the id in the
-         *  session on first page load?
-         */
-        $config = \App\Config::getInstance();
-        $dispatcher = $config->getEventDispatcher();
+        $this->controller = $event->get('controller');
+
+        // Get the page template
         $plugin = Plugin::getInstance();
+        $template = $this->controller->getPage()->getTemplate();
+        $var = $plugin->getData()->get('plugin.menu.var');
+        if (!$template->getVarElement($var)) return;
 
+        // TODO: Will this cater for all instances???
+        $template->appendHtml($var, $plugin->getData()->get('plugin.menu.content'));
 
-        $dispatcher->addSubscriber(new \Ml\Listener\MailLogHandler());
 
     }
 
@@ -59,9 +76,9 @@ class SetupHandler implements Subscriber
     public static function getSubscribedEvents()
     {
         return array(
-            \Tk\Kernel\KernelEvents::REQUEST => array('onRequest', -10)
+            //\Tk\PageEvents::CONTROLLER_INIT => array('onControllerInit', 0),
+            \Tk\PageEvents::CONTROLLER_SHOW => array('onControllerShow', 0)
         );
     }
-    
     
 }

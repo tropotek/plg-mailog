@@ -20,10 +20,11 @@ class MailLogHandler implements Subscriber
      */
     public function preSend(\Tk\Mail\MailEvent $event)
     {
+        $config = \App\Config::getInstance();
         $message = $event->getMessage();
         $headers = $message->getHeadersList();
         if ($message && !array_key_exists('X-Exception', $headers)) {
-            $message->addHeader('X-System-Message', 'Safe Soda');
+            $message->addHeader('X-System-Message', $config->get('system.title'));
         }
 
     }
@@ -34,12 +35,15 @@ class MailLogHandler implements Subscriber
     public function postSend(\Tk\Mail\MailEvent $event)
     {
         $config = \App\Config::getInstance();
+        $message = $event->getMessage();
 
-        if (current($event->getMessage()->getTo()) == $config->get('site.email')) {
+        if (!$message || array_key_exists('X-Exception', $message->getHeadersList())) {
             return;
         }
-
-        $mailLog = \Ml\Db\MailLog::createFromMessage($event->getMessage());
+        if (current($message->getTo()) == $config->get('site.email')) {
+            return;
+        }
+        $mailLog = \Ml\Db\MailLog::createFromMessage($message);
         $mailLog->save();
     }
 
