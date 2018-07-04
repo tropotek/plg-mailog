@@ -76,11 +76,11 @@ class SystemSettings extends Iface
         $values = $form->getValues();
         $this->data->replace($values);
         
-        if (empty($values['plugin.title']) || strlen($values['plugin.title']) < 3) {
-            $form->addFieldError('plugin.title', 'Please enter your name');
+        if (empty($values['plugin.menu.var'])) {
+            $form->addFieldError('plugin.menu.var', 'Please enter the var name for the menu in the page template');
         }
-        if (empty($values['plugin.email']) || !filter_var($values['plugin.email'], \FILTER_VALIDATE_EMAIL)) {
-            $form->addFieldError('plugin.email', 'Please enter a valid email address');
+        if (empty($values['plugin.menu.content'])) {
+            $form->addFieldError('plugin.menu.content', 'Please enter the menu item content for the page template');
         }
         
         if ($this->form->hasErrors()) {
