@@ -17,8 +17,6 @@ class MailLogHandler implements Subscriber
 
     /**
      * @param \Tk\Mail\MailEvent $event
-     * @throws \Tk\Db\Exception
-     * @throws \Tk\Exception
      */
     public function preSend(\Tk\Mail\MailEvent $event)
     {
@@ -30,6 +28,9 @@ class MailLogHandler implements Subscriber
 
     }
 
+    /**
+     * @param \Tk\Mail\MailEvent $event
+     */
     public function postSend(\Tk\Mail\MailEvent $event)
     {
         $config = \App\Config::getInstance();
@@ -38,7 +39,7 @@ class MailLogHandler implements Subscriber
             return;
         }
 
-        $mailLog = \App\Db\MailLog::createFromMessage($event->getMessage());
+        $mailLog = \Ml\Db\MailLog::createFromMessage($event->getMessage());
         $mailLog->save();
     }
 

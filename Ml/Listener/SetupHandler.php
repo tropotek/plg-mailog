@@ -30,22 +30,11 @@ class SetupHandler implements Subscriber
         $dispatcher = $config->getEventDispatcher();
         $plugin = Plugin::getInstance();
 
-        $dispatcher->addSubscriber(new \Ml\Listener\ExampleHandler());
+
+        $dispatcher->addSubscriber(new \Ml\Listener\MailLogHandler());
 
     }
 
-
-
-    public function onInit(\Tk\Event\KernelEvent $event)
-    {
-        //vd('onInit');
-    }
-
-    public function onController(\Tk\Event\ControllerEvent $event)
-    {
-        //vd('onController');
-    }
-    
 
     /**
      * Returns an array of event names this subscriber wants to listen to.
@@ -70,8 +59,6 @@ class SetupHandler implements Subscriber
     public static function getSubscribedEvents()
     {
         return array(
-            //\Tk\Kernel\KernelEvents::INIT => array('onInit', 0),
-            //\Tk\Kernel\KernelEvents::CONTROLLER => array('onController', 0),
             \Tk\Kernel\KernelEvents::REQUEST => array('onRequest', -10)
         );
     }
