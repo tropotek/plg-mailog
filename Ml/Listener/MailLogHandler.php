@@ -24,7 +24,11 @@ class MailLogHandler implements Subscriber
         $message = $event->getMessage();
         $headers = $message->getHeadersList();
         if ($message && !array_key_exists('X-Exception', $headers)) {
-            $message->addHeader('X-System-Message', $config->get('system.title'));
+
+            $title = $config->get('site.title');
+            if (!$title) $title = 'Tk2 Site';
+
+            $message->addHeader('X-System-Message', $title);
         }
 
     }
