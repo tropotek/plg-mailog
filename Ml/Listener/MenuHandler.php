@@ -29,27 +29,28 @@ class MenuHandler implements Subscriber
     }
 
     /**
-     * Check the user has access to this controller
-     *
-     * @param Event $event
+     * @param \Dom\Event\DomEvent $event
      * @throws \Dom\Exception
      * @throws \Tk\Db\Exception
      * @throws \Tk\Exception
      */
-    public function onControllerShow(Event $event)
+    public function onTemplateLoad(\Dom\Event\DomEvent $event)
     {
-        $this->controller = $event->get('controller');
-
         // Get the page template
         $plugin = Plugin::getInstance();
-        $template = $this->controller->getPage()->getTemplate();
+        $template = $event->getTemplate();
         $var = $plugin->getData()->get('plugin.menu.var');
-        if (!$template->getVarElement($var)) return;
+        $rendererClass = $plugin->getData()->get('plugin.menu.renderer');
 
-        // TODO: Will this cater for all instances???
+        if ($event->get('callingClass') != $rendererClass) {
+            return;
+        }
+
+        if (!$template->hasVar($var)) {
+            return;
+        }
+
         $template->appendHtml($var, $plugin->getData()->get('plugin.menu.content'));
-
-
     }
 
 
@@ -77,7 +78,7 @@ class MenuHandler implements Subscriber
     {
         return array(
             //\Tk\PageEvents::CONTROLLER_INIT => array('onControllerInit', 0),
-            \Tk\PageEvents::CONTROLLER_SHOW => array('onControllerShow', 0)
+            \Dom\DomEvents::DOM_TEMPLATE_LOAD => array('onTemplateLoad', 0)
         );
     }
     

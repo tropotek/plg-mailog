@@ -52,6 +52,9 @@ class SystemSettings extends Iface
         $this->form->setRenderer($this->getConfig()->createFormRenderer($this->form));
 
         // TODO: What if they have a menu object?????
+        $this->form->addField(new Field\Input('plugin.menu.renderer'))->setLabel('Menu Renderer Class')
+            ->setRequired(true)->setNotes('Set the renderer class name that we need to catch to renderer the menu');
+
         $this->form->addField(new Field\Input('plugin.menu.var'))->setLabel('Menu Var')
             ->setRequired(true)->setNotes('Set the template var where the mail log menu items will be appended to in the page template');
 
@@ -75,7 +78,10 @@ class SystemSettings extends Iface
     {
         $values = $form->getValues();
         $this->data->replace($values);
-        
+
+        if (empty($values['plugin.menu.renderer']) || !class_exists($values['plugin.menu.renderer'])) {
+            $form->addFieldError('plugin.menu.renderer', 'Please enter a valid class name for the menu renderer');
+        }
         if (empty($values['plugin.menu.var'])) {
             $form->addFieldError('plugin.menu.var', 'Please enter the var name for the menu in the page template');
         }
