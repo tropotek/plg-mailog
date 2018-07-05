@@ -40,12 +40,13 @@ class MenuHandler implements Subscriber
         $plugin = Plugin::getInstance();
         $template = $event->getTemplate();
         $var = $plugin->getData()->get('plugin.menu.var');
-        $rendererClass = $plugin->getData()->get('plugin.menu.renderer');
+        $rendererClass = trim($plugin->getData()->get('plugin.menu.renderer'), '\\');
 
-        if ($event->get('callingClass') != $rendererClass) {
+
+        if (!in_array($rendererClass, class_parents($event->get('callingClass')))) {
             return;
         }
-
+vd($event->get('callingClass'), $var);
         if (!$template->hasVar($var)) {
             return;
         }
