@@ -67,7 +67,7 @@ class Plugin extends \Tk\Plugin\Iface
 
         // Init Settings
         $data = $this->getData();
-        $data->set('plugin.menu.renderer', '/App/Page/AdminPage');
+        $data->set('plugin.menu.renderer', '/Bs/Page/AdminPage');
         $data->set('plugin.menu.var', 'system-menu');
         $data->set('plugin.menu.content', '<li><a href="/admin/mailLogManager.html"><i class="fa fa-envelope-o fa-fw"></i> Email Log</a></li>');
         $data->save();

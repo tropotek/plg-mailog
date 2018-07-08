@@ -4,14 +4,13 @@ namespace Ml\Controller\MailLog;
 use Tk\Request;
 use Dom\Template;
 use Tk\Form;
-use App\Controller\AdminIface;
 
 /**
  * @author Michael Mifsud <info@tropotek.com>
  * @link http://www.tropotek.com/
  * @license Copyright 2015 Michael Mifsud
  */
-class View extends AdminIface
+class View extends \Bs\Controller\AdminIface
 {
 
     /**
@@ -30,7 +29,6 @@ class View extends AdminIface
      */
     public function __construct()
     {
-        parent::__construct();
         $this->setPageTitle('Mail Log View');
     }
 

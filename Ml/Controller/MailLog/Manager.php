@@ -4,7 +4,6 @@ namespace Ml\Controller\MailLog;
 use Tk\Request;
 use Dom\Template;
 use Tk\Form\Field;
-use App\Controller\AdminIface;
 
 /**
  *
@@ -13,7 +12,7 @@ use App\Controller\AdminIface;
  * @link http://www.tropotek.com/
  * @license Copyright 2015 Michael Mifsud
  */
-class Manager extends AdminIface
+class Manager extends \Bs\Controller\AdminIface
 {
 
     /**
@@ -27,7 +26,6 @@ class Manager extends AdminIface
      */
     public function __construct()
     {
-        parent::__construct();
         $this->setPageTitle('Mail Log');
         if ($this->getCrumbs())
             $this->getCrumbs()->reset();

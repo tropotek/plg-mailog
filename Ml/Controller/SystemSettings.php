@@ -5,7 +5,6 @@ use Tk\Request;
 use Tk\Form;
 use Tk\Form\Event;
 use Tk\Form\Field;
-use App\Controller\Iface;
 use Ml\Plugin;
 
 /**
@@ -13,7 +12,7 @@ use Ml\Plugin;
  * @link http://www.tropotek.com/
  * @license Copyright 2015 Michael Mifsud
  */
-class SystemSettings extends Iface
+class SystemSettings extends \Bs\Controller\AdminIface
 {
 
     /**
@@ -79,7 +78,8 @@ class SystemSettings extends Iface
         $values = $form->getValues();
         $this->data->replace($values);
 
-        if (empty($values['plugin.menu.renderer']) || !class_exists($values['plugin.menu.renderer'])) {
+        //if (empty($values['plugin.menu.renderer']) || !class_exists($values['plugin.menu.renderer'])) {
+        if (empty($values['plugin.menu.renderer']) ) {
             $form->addFieldError('plugin.menu.renderer', 'Please enter a valid class name for the menu renderer');
         }
         if (empty($values['plugin.menu.var'])) {
@@ -127,12 +127,6 @@ class SystemSettings extends Iface
         $xhtml = <<<XHTML
 <div var="content">
 
-    <div class="panel panel-default">
-      <div class="panel-heading"><i class="fa fa-cogs fa-fw"></i> Actions</div>
-      <div class="panel-body " var="action-panel">
-        <a href="javascript: window.history.back();" class="btn btn-default"><i class="fa fa-arrow-left"></i> <span>Back</span></a>
-      </div>
-    </div>
   
     <div class="panel panel-default">
       <div class="panel-heading"><i class="fa fa-cog"></i> Site Settings</div>
