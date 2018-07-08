@@ -1,5 +1,5 @@
 <?php
-$config = \Tk\Config::getInstance();
+$config = \Bs\Config::getInstance();
 
 /** @var \Composer\Autoload\ClassLoader $composer */
 $composer = $config->getComposer();
@@ -7,7 +7,7 @@ if ($composer)
     $composer->add('Ml\\', dirname(__FILE__));
 
 /** @var \Tk\Routing\RouteCollection $routes */
-$routes = $config['site.routes'];
+$routes = $config->getSiteRoutes();
 
 $params = array('role' => 'admin');
 $routes->add('mailog-settings', new \Tk\Routing\Route('/mailog/adminSettings.html', 'Ml\Controller\SystemSettings::doDefault', $params));
