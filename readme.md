@@ -37,11 +37,6 @@ to load the classes.
 
 ## Introduction
 
-__NOTE:__ When creating plugins that will not be installed via composer be sure that 
- you use a single name as the plugin name (as the sample) as that will become its namespace.
- If you do use Composer then you can create custom namespaces in the composer.json file of 
- the plugin.
-
 
 
   

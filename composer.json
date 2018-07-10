@@ -1,10 +1,11 @@
 {
     "name": "ttek-plg/mailog",
     "type": "ttek-plugin",
-    "description": "Tk2 lib mail log plugin",
+    "description": "Log and track any mail sent through the PHP mailGateway",
     "keywords":  [
         "tropotek",
         "plugin",
+        "tk2",
         "mailog"
     ],
     "homepage": "http://www.tropotek.com/",

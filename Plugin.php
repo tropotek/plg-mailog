@@ -12,9 +12,9 @@ use Tk\Event\Dispatcher;
 class Plugin extends \Tk\Plugin\Iface
 {
 
-    const ZONE_INSTITUTION = 'institution';
-    const ZONE_COURSE_PROFILE = 'profile';
-    const ZONE_COURSE = 'course';
+//    const ZONE_INSTITUTION = 'institution';
+//    const ZONE_COURSE_PROFILE = 'profile';
+//    const ZONE_COURSE = 'course';
 
     /**
      * A helper method to get the Plugin instance globally
@@ -110,7 +110,7 @@ class Plugin extends \Tk\Plugin\Iface
 
         // Remove migration track
         $sql = sprintf('DELETE FROM %s WHERE %s LIKE %s', $db->quoteParameter(\Tk\Util\SqlMigrate::$DB_TABLE), $db->quoteParameter('path'),
-            $db->quote('/plugin/' . $this->getName().'/%'));
+            $db->quote('/mailog/' . $this->getName().'/%'));
         $db->query($sql);
 
         // Clear the data table of all plugin data
@@ -132,7 +132,7 @@ class Plugin extends \Tk\Plugin\Iface
      */
     public function getSettingsUrl()
     {
-        return \Tk\Uri::create('/mailog/adminSettings.html');
+        return \Tk\Uri::create('/mailogSettings.html');
     }
 
 }
