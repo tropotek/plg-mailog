@@ -1,5 +1,5 @@
 <?php
-namespace Ml\Controller\MailLog;
+namespace Tk\Ml\Controller\MailLog;
 
 use Tk\Request;
 use Dom\Template;
@@ -19,7 +19,7 @@ class View extends \Bs\Controller\AdminIface
     protected $form = null;
 
     /**
-     * @var \Ml\Db\MailLog
+     * @var \Tk\Ml\Db\MailLog
      */
     private $mailLog = null;
 
@@ -45,7 +45,7 @@ class View extends \Bs\Controller\AdminIface
     public function doDefault(Request $request)
     {
 
-        $this->mailLog = \Ml\Db\MailLog::getMapper()->find($request->get('mailLogId'));
+        $this->mailLog = \Tk\Ml\Db\MailLog::getMapper()->find($request->get('mailLogId'));
 
     }
 

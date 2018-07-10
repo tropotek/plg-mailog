@@ -1,5 +1,5 @@
 <?php
-namespace Ml;
+namespace Tk\Ml;
 
 use Tk\Event\Dispatcher;
 
@@ -43,8 +43,8 @@ class Plugin extends \Tk\Plugin\Iface
 
         /** @var Dispatcher $dispatcher */
         $dispatcher = \App\Config::getInstance()->getEventDispatcher();
-        $dispatcher->addSubscriber(new \Ml\Listener\MailLogHandler());
-        $dispatcher->addSubscriber(new \Ml\Listener\MenuHandler());
+        $dispatcher->addSubscriber(new \Tk\Ml\Listener\MailLogHandler());
+        $dispatcher->addSubscriber(new \Tk\Ml\Listener\MenuHandler());
 
     }
 

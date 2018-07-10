@@ -1,5 +1,5 @@
 <?php
-namespace Ml\Db;
+namespace Tk\Ml\Db;
 
 use App\Controller\Subscriber;
 use Tk\Db\Tool;

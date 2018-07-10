@@ -1,9 +1,9 @@
 <?php
-namespace Ml\Listener;
+namespace Tk\Ml\Listener;
 
 use Tk\Event\Subscriber;
 use Tk\Event\Event;
-use Ml\Plugin;
+use Tk\Ml\Plugin;
 
 /**
  * @author Michael Mifsud <info@tropotek.com>

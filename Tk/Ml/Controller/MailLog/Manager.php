@@ -1,5 +1,5 @@
 <?php
-namespace Ml\Controller\MailLog;
+namespace Tk\Ml\Controller\MailLog;
 
 use Tk\Request;
 use Dom\Template;
@@ -57,7 +57,7 @@ class Manager extends \Bs\Controller\AdminIface
         $this->table->addAction(new \Tk\Table\Action\Csv($this->getConfig()->getDb()));
         //$this->table->addAction(new \Tk\Table\Action\Delete());
 
-        $list = \Ml\Db\MailLogMap::create()->findFiltered($this->table->getFilterValues(), $this->table->getTool('a.created DESC'));
+        $list = \Tk\Ml\Db\MailLogMap::create()->findFiltered($this->table->getFilterValues(), $this->table->getTool('a.created DESC'));
         $this->table->setList($list);
 
     }

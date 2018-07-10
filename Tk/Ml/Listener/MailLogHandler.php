@@ -1,5 +1,5 @@
 <?php
-namespace Ml\Listener;
+namespace Tk\Ml\Listener;
 
 use Tk\Event\Subscriber;
 
@@ -47,7 +47,7 @@ class MailLogHandler implements Subscriber
         if (current($message->getTo()) == $config->get('site.email')) {
             return;
         }
-        $mailLog = \Ml\Db\MailLog::createFromMessage($message);
+        $mailLog = \Tk\Ml\Db\MailLog::createFromMessage($message);
         $mailLog->save();
     }
 

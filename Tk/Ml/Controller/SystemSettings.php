@@ -1,11 +1,11 @@
 <?php
-namespace Ml\Controller;
+namespace Tk\Ml\Controller;
 
 use Tk\Request;
 use Tk\Form;
 use Tk\Form\Event;
 use Tk\Form\Field;
-use Ml\Plugin;
+use Tk\Ml\Plugin;
 
 /**
  * @author Michael Mifsud <info@tropotek.com>
