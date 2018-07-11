@@ -39,9 +39,9 @@ class MenuHandler implements Subscriber
         // Get the page template
         $plugin = Plugin::getInstance();
         $template = $event->getTemplate();
-        $var = $plugin->getData()->get('plugin.menu.var');
-        $rendererClass = trim($plugin->getData()->get('plugin.menu.renderer'), '\\');
 
+        $var = $plugin->getData()->get('plugin.menu.admin.var');
+        $rendererClass = trim($plugin->getData()->get('plugin.menu.admin.renderer'), '\\');
         if (!in_array($rendererClass, class_parents($event->get('callingClass')))) {
             return;
         }
@@ -49,7 +49,7 @@ class MenuHandler implements Subscriber
             return;
         }
 
-        $template->appendHtml($var, $plugin->getData()->get('plugin.menu.content'));
+        $template->appendHtml($var, $plugin->getData()->get('plugin.menu.admin.content'));
     }
 
 

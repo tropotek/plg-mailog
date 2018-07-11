@@ -63,13 +63,14 @@ class Plugin extends \Tk\Plugin\Iface
         $db = $this->getConfig()->getDb();
         $migrate = new \Tk\Util\SqlMigrate($db);
         $migrate->setTempPath($this->getConfig()->getTempPath());
-        $migrate->migrate(dirname(__FILE__) . '/sql');
+        $sqlPath = dirname(__FILE__) . '/sql';
+        $migrate->migrate($sqlPath);
 
         // Init Settings
         $data = $this->getData();
-        $data->set('plugin.menu.renderer', '/Bs/Page/AdminPage');
-        $data->set('plugin.menu.var', 'system-menu');
-        $data->set('plugin.menu.content', '<li><a href="/admin/mailLogManager.html"><i class="fa fa-envelope-o fa-fw"></i> Email Log</a></li>');
+        $data->set('plugin.menu.admin.renderer', '\Bs\Page');
+        $data->set('plugin.menu.admin.var', 'system-menu');
+        $data->set('plugin.menu.admin.content', '<li><a href="/admin/mailLogManager.html"><i class="fa fa-envelope-o fa-fw"></i> Email Log</a></li>');
         $data->save();
     }
 
@@ -110,7 +111,7 @@ class Plugin extends \Tk\Plugin\Iface
 
         // Remove migration track
         $sql = sprintf('DELETE FROM %s WHERE %s LIKE %s', $db->quoteParameter(\Tk\Util\SqlMigrate::$DB_TABLE), $db->quoteParameter('path'),
-            $db->quote('/mailog/' . $this->getName().'/%'));
+            $db->quote('/plugin/' . $this->getName().'/%'));
         $db->query($sql);
 
         // Clear the data table of all plugin data
@@ -121,8 +122,8 @@ class Plugin extends \Tk\Plugin\Iface
 //        $data = \Tk\Db\Data::create($this->getName());
 //        $data->clear();
 //        $data->save();
-
-        $this->getConfig()->getDb()->query('DROP TABLE mail_log');
+        if ($db->hasTable('mail_log'))
+            $db->query('DROP TABLE mail_log');
 
     }
 

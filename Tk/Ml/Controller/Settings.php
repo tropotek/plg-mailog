@@ -12,7 +12,7 @@ use Tk\Ml\Plugin;
  * @link http://www.tropotek.com/
  * @license Copyright 2015 Michael Mifsud
  */
-class SystemSettings extends \Bs\Controller\AdminIface
+class Settings extends \Bs\Controller\AdminIface
 {
 
     /**
@@ -33,7 +33,7 @@ class SystemSettings extends \Bs\Controller\AdminIface
      */
     public function __construct()
     {
-        $this->setPageTitle('Plugin Settings');
+        $this->setPageTitle('Mail Log Settings');
 
         /** @var Plugin $plugin */
         $plugin = Plugin::getInstance();
@@ -47,17 +47,17 @@ class SystemSettings extends \Bs\Controller\AdminIface
      */
     public function doDefault(Request $request)
     {
-        $this->form = $this->getConfig()->createForm('systemSettings');
+        $this->form = $this->getConfig()->createForm('pluginSettings');
         $this->form->setRenderer($this->getConfig()->createFormRenderer($this->form));
 
         // TODO: What if they have a menu object?????
-        $this->form->addField(new Field\Input('plugin.menu.renderer'))->setLabel('Menu Renderer Class')
+        $this->form->addField(new Field\Input('plugin.menu.admin.renderer'))->setLabel('Admin Menu Renderer Class')
             ->setRequired(true)->setNotes('Set the renderer class name that we need to catch to renderer the menu');
 
-        $this->form->addField(new Field\Input('plugin.menu.var'))->setLabel('Menu Var')
+        $this->form->addField(new Field\Input('plugin.menu.admin.var'))->setLabel('Admin Menu Var')
             ->setRequired(true)->setNotes('Set the template var where the mail log menu items will be appended to in the page template');
 
-        $this->form->addField(new Field\Textarea('plugin.menu.content'))->setLabel('Menu Item')
+        $this->form->addField(new Field\Textarea('plugin.menu.admin.content'))->setLabel('Admin Menu Item')
             ->setRequired(true)->setNotes('The content for the menu');
         
         $this->form->addField(new Event\Button('update', array($this, 'doSubmit')));
@@ -78,15 +78,15 @@ class SystemSettings extends \Bs\Controller\AdminIface
         $values = $form->getValues();
         $this->data->replace($values);
 
-        //if (empty($values['plugin.menu.renderer']) || !class_exists($values['plugin.menu.renderer'])) {
-        if (empty($values['plugin.menu.renderer']) ) {
-            $form->addFieldError('plugin.menu.renderer', 'Please enter a valid class name for the menu renderer');
+        //if (empty($values['plugin.menu.admin.renderer']) || !class_exists($values['plugin.menu.admin.renderer'])) {
+        if (empty($values['plugin.menu.admin.renderer']) ) {
+            $form->addFieldError('plugin.menu.admin.renderer', 'Please enter a valid class name for the admin menu renderer');
         }
-        if (empty($values['plugin.menu.var'])) {
-            $form->addFieldError('plugin.menu.var', 'Please enter the var name for the menu in the page template');
+        if (empty($values['plugin.menu.admin.var'])) {
+            $form->addFieldError('plugin.menu.admin.var', 'Please enter the var name for the menu in the admin page template');
         }
-        if (empty($values['plugin.menu.content'])) {
-            $form->addFieldError('plugin.menu.content', 'Please enter the menu item content for the page template');
+        if (empty($values['plugin.menu.admin.content'])) {
+            $form->addFieldError('plugin.menu.admin.content', 'Please enter the menu item content link');
         }
         
         if ($this->form->hasErrors()) {
@@ -129,7 +129,7 @@ class SystemSettings extends \Bs\Controller\AdminIface
 
   
     <div class="panel panel-default">
-      <div class="panel-heading"><i class="fa fa-cog"></i> Site Settings</div>
+      <div class="panel-heading"><i class="fa fa-cog"></i> Plugin Settings</div>
       <div class="panel-body">
         <div var="form"></div>
       </div>
