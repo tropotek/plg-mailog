@@ -45,7 +45,7 @@ class Manager extends \Bs\Controller\AdminIface
         $this->table->setRenderer($this->getConfig()->createTableRenderer($this->table));
 
         //$this->table->addCell(new \Tk\Table\Cell\Checkbox('id'));
-        $this->table->addCell(new \Tk\Table\Cell\Text('subject'))->addCss('key')->setUrl(\Tk\Uri::create('admin/mailLogView.html'));
+        $this->table->addCell(new \Tk\Table\Cell\Text('subject'))->addCss('key')->setUrl(\Tk\Uri::create('/admin/mailLogView.html'));
         $this->table->addCell(new \Tk\Table\Cell\Text('to'));
         //$this->table->addCell(new \Tk\Table\Cell\Text('from'));
         $this->table->addCell(new \Tk\Table\Cell\Date('created'))->setFormat(\Tk\Date::FORMAT_LONG_DATETIME);
