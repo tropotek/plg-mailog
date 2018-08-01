@@ -37,16 +37,11 @@ class View extends \Bs\Controller\AdminIface
     /**
      *
      * @param Request $request
-     * @throws Form\Exception
-     * @throws \ReflectionException
-     * @throws \Tk\Db\Exception
-     * @throws \Tk\Exception
+     * @throws \Exception
      */
     public function doDefault(Request $request)
     {
-
-        $this->mailLog = \Tk\Ml\Db\MailLog::getMapper()->find($request->get('mailLogId'));
-
+        $this->mailLog = \Tk\Ml\Db\MailLogMap::create()->find($request->get('mailLogId'));
     }
 
     /**
