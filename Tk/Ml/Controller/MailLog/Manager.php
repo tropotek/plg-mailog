@@ -6,8 +6,6 @@ use Dom\Template;
 use Tk\Form\Field;
 
 /**
- *
- *
  * @author Michael Mifsud <info@tropotek.com>
  * @link http://www.tropotek.com/
  * @license Copyright 2015 Michael Mifsud
@@ -34,9 +32,7 @@ class Manager extends \Bs\Controller\AdminIface
 
     /**
      * @param Request $request
-     * @throws \Tk\Db\Exception
-     * @throws \Tk\Exception
-     * @throws \Tk\Form\Exception
+     * @throws \Exception
      */
     public function doDefault(Request $request)
     {
@@ -64,13 +60,13 @@ class Manager extends \Bs\Controller\AdminIface
 
     /**
      * @return \Dom\Template
-     * @throws \Dom\Exception
+     * @throws \Exception
      */
     public function show()
     {
         $template = parent::show();
 
-        $template->replaceTemplate('table', $this->table->getRenderer()->show());
+        $template->appendTemplate('table', $this->table->getRenderer()->show());
         
         return $template;
     }
@@ -83,18 +79,7 @@ class Manager extends \Bs\Controller\AdminIface
     public function __makeTemplate()
     {
         $xhtml = <<<HTML
-<div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <i class="fa fa-envelope-o fa-fw"></i> Mail Log
-    </div>
-    <div class="panel-body">
-      <div var="table"></div>
-    </div>
-  </div>
-
-</div>
+<div class="tk-panel" data-panel-title="Mail Log" data-panel-icon="fa fa-envelope-o" var="table"></div>
 HTML;
 
         return \Dom\Loader::load($xhtml);

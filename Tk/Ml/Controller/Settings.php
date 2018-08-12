@@ -112,7 +112,7 @@ class Settings extends \Bs\Controller\AdminIface
         $template = parent::show();
         
         // Render the form
-        $template->insertTemplate('form', $this->form->getRenderer()->show());
+        $template->appendTemplate('form', $this->form->getRenderer()->show());
 
         return $template;
     }
@@ -125,17 +125,7 @@ class Settings extends \Bs\Controller\AdminIface
     public function __makeTemplate()
     {
         $xhtml = <<<XHTML
-<div var="content">
-
-  
-    <div class="panel panel-default">
-      <div class="panel-heading"><i class="fa fa-cog"></i> Plugin Settings</div>
-      <div class="panel-body">
-        <div var="form"></div>
-      </div>
-    </div>
-    
-</div>
+<div class="tk-panel" data-panel-title="Plugin Settings" data-panel-icon="fa fa-cogs" var="form"></div>
 XHTML;
 
         return \Dom\Loader::load($xhtml);
