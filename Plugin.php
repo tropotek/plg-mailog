@@ -66,7 +66,8 @@ class Plugin extends \Tk\Plugin\Iface
         $data = $this->getData();
         $data->set('plugin.menu.admin.renderer', '\App\Ui\Menu\AdminSideNav');
         $data->set('plugin.menu.admin.var', 'nav');
-        $data->set('plugin.menu.admin.content', '<li><a href="/admin/mailLogManager.html"><i class="fa fa-envelope-o fa-fw"></i> Email Log</a></li>');
+        $url = \Bs\Uri::createHomeUrl('/mailLogManager.html');
+        $data->set('plugin.menu.admin.content', '<li><a href="'.htmlentities($url->toString()).'"><i class="fa fa-envelope-o fa-fw"></i> <span>Email Log</span></a></li>');
         $data->save();
     }
 
