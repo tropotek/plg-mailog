@@ -45,7 +45,7 @@ class MenuHandler implements Subscriber
         if ($rendererClass != $event->get('callingClass') && !in_array($rendererClass, class_parents($event->get('callingClass')))) {
             return;
         }
-        if (!$template->hasVar($var)) {
+        if (!$template->has($var)) {
             return;
         }
 
