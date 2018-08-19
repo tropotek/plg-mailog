@@ -1,5 +1,10 @@
 #CHANGELOG#
 
+Ver 1.0.8 [2018-08-20]:
+-------------------------------
+  - Added manuall enrollment email notifications
+
+
 Ver 1.0.6 [2018-08-14]:
 -------------------------------
 
