@@ -32,7 +32,7 @@ class MenuHandler implements Subscriber
 
         if ($user && $user->isAdmin()) {
             $sideMenu = $config->getMenuManager()->getMenu('nav-side', $user->getRoleType());
-            $parent = $sideMenu->findByName('');
+            //$parent = $sideMenu->findByName('');
 
         }
 
