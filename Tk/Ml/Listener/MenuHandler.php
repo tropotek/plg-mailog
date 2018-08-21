@@ -14,7 +14,7 @@ class MenuHandler implements Subscriber
 {
 
     /**
-     * @var \App\Controller\Iface
+     * @var \Bs\Controller\Iface
      */
     protected $controller = null;
 
@@ -24,32 +24,32 @@ class MenuHandler implements Subscriber
      */
     public function onControllerInit(Event $event)
     {
-        /** @var \App\Controller\Iface $controller */
+        /** @var \Bs\Controller\Iface $controller */
         $this->controller = $event->get('controller');
     }
 
     /**
      * @param \Dom\Event\DomEvent $event
-     * @throws \Dom\Exception
-     * @throws \Tk\Db\Exception
-     * @throws \Tk\Exception
+     * @throws \Exception
      */
     public function onTemplateLoad(\Dom\Event\DomEvent $event)
     {
         // Get the page template
         $plugin = Plugin::getInstance();
         $template = $event->getTemplate();
+        $config = \Bs\Config::getInstance();
 
-        $var = $plugin->getData()->get('plugin.menu.admin.var');
-        $rendererClass = trim($plugin->getData()->get('plugin.menu.admin.renderer'), '\\');
-        if ($rendererClass != $event->get('callingClass') && !in_array($rendererClass, class_parents($event->get('callingClass')))) {
-            return;
+        if ($config->getUser() && $config->getUser()->isAdmin()) {
+            $var = $plugin->getData()->get('plugin.menu.admin.var');
+            $rendererClass = trim($plugin->getData()->get('plugin.menu.admin.renderer'), '\\');
+            if ($rendererClass != $event->get('callingClass') && !in_array($rendererClass, class_parents($event->get('callingClass')))) {
+                return;
+            }
+            if (!$template->has($var)) {
+                return;
+            }
+            $template->appendHtml($var, $plugin->getData()->get('plugin.menu.admin.content'));
         }
-        if (!$template->has($var)) {
-            return;
-        }
-
-        $template->appendHtml($var, $plugin->getData()->get('plugin.menu.admin.content'));
     }
 
 
