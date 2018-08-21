@@ -25,7 +25,17 @@ class MenuHandler implements Subscriber
     public function onControllerInit(Event $event)
     {
         /** @var \Bs\Controller\Iface $controller */
-        $this->controller = $event->get('controller');
+//        $this->controller = $event->get('controller');
+
+        $config = \Bs\Config::getInstance();
+        $user = $config->getUser();
+
+        if ($user && $user->isAdmin()) {
+            $sideMenu = $config->getMenuManager()->getMenu('nav-side', $user->getRoleType());
+            $parent = $sideMenu->findByName('');
+
+        }
+
     }
 
     /**
@@ -76,7 +86,7 @@ class MenuHandler implements Subscriber
     public static function getSubscribedEvents()
     {
         return array(
-            //\Tk\PageEvents::CONTROLLER_INIT => array('onControllerInit', 0),
+            \Tk\PageEvents::CONTROLLER_INIT => array('onControllerInit', 0),
             \Dom\DomEvents::DOM_TEMPLATE_LOAD => array('onTemplateLoad', 0)
         );
     }
