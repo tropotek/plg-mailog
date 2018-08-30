@@ -1,5 +1,11 @@
 #CHANGELOG#
 
+Ver 1.0.10 [2018-08-31]:
+-------------------------------
+  - Added PageLoading to tk2uni project
+  - Created new dynamic menu system
+
+
 Ver 1.0.8 [2018-08-20]:
 -------------------------------
   - Added manuall enrollment email notifications
