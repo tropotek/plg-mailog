@@ -1,5 +1,10 @@
 #CHANGELOG#
 
+Ver 1.0.12 [2018-08-31]:
+-------------------------------
+  - Fixed cron job
+
+
 Ver 1.0.10 [2018-08-31]:
 -------------------------------
   - Added PageLoading to tk2uni project
