@@ -41,12 +41,15 @@ class MailLogHandler implements Subscriber
         $config = \App\Config::getInstance();
         $message = $event->getMessage();
 
+        vd();
         if (!$message || array_key_exists('X-Exception', $message->getHeadersList())) {
             return;
         }
-        if (current($message->getTo()) == $config->get('site.email')) {
+        vd();
+        if (!$config->isDebug() && current($message->getTo()) == $config->get('site.email')) {
             return;
         }
+        vd();
         $mailLog = \Tk\Ml\Db\MailLog::createFromMessage($message);
         $mailLog->save();
     }
