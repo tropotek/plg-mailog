@@ -21,6 +21,8 @@ class MenuHandler implements Subscriber
 
     /**
      * @param Event $event
+     * @throws \Tk\Db\Exception
+     * @throws \Tk\Exception
      */
     public function onControllerInit(Event $event)
     {
@@ -30,37 +32,36 @@ class MenuHandler implements Subscriber
         $config = \Bs\Config::getInstance();
         $user = $config->getUser();
 
-        if ($user && $user->isAdmin()) {
-            $sideMenu = $config->getMenuManager()->getMenu('nav-side', $user->getRoleType());
-            //$parent = $sideMenu->findByName('');
+        if ($user) {
+
+            $dropdownName = Plugin::getInstance()->getData()->get('plugin.menu.nav.dropdown', 'nav-dropdown');
+            $sideName = Plugin::getInstance()->getData()->get('plugin.menu.nav.side', 'nav-side');
+
+            $dropdownMenu = $config->getMenuManager()->getMenu($dropdownName);
+            $sideMenu = $config->getMenuManager()->getMenu($sideName);
+
+            $type = $user->getRoleType();
+
+            if ($type == 'admin') {
+                $url = \Bs\Uri::createHomeUrl('/mailLogManager.html');
+//                if ($dropdownMenu)
+//                    $dropdownMenu->prepend(\Tk\Ui\Menu\Item::create('Mail Log', $url, 'fa fa-envelope'), 'About');
+                if ($sideMenu)
+                    $sideMenu->append(\Tk\Ui\Menu\Item::create('Mail Log', $url, 'fa fa-envelope'));
+            }
+
+            if ($type == 'client') {
+                // TODO: how do we deal with this ?????
+            }
+
+            if ($type == 'staff') {
+                // TODO: how do we deal with this ?????
+            }
 
         }
 
     }
 
-    /**
-     * @param \Dom\Event\DomEvent $event
-     * @throws \Exception
-     */
-    public function onTemplateLoad(\Dom\Event\DomEvent $event)
-    {
-        // Get the page template
-        $plugin = Plugin::getInstance();
-        $template = $event->getTemplate();
-        $config = \Bs\Config::getInstance();
-
-        if ($config->getUser() && $config->getUser()->isAdmin()) {
-            $var = $plugin->getData()->get('plugin.menu.admin.var');
-            $rendererClass = trim($plugin->getData()->get('plugin.menu.admin.renderer'), '\\');
-            if ($rendererClass != $event->get('callingClass') && !in_array($rendererClass, class_parents($event->get('callingClass')))) {
-                return;
-            }
-            if (!$template->has($var)) {
-                return;
-            }
-            $template->appendHtml($var, $plugin->getData()->get('plugin.menu.admin.content'));
-        }
-    }
 
 
     /**
@@ -86,8 +87,7 @@ class MenuHandler implements Subscriber
     public static function getSubscribedEvents()
     {
         return array(
-            \Tk\PageEvents::CONTROLLER_INIT => array('onControllerInit', 0),
-            \Dom\DomEvents::DOM_TEMPLATE_LOAD => array('onTemplateLoad', 0)
+            \Tk\PageEvents::CONTROLLER_INIT => array('onControllerInit', 0)
         );
     }
     
