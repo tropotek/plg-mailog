@@ -64,6 +64,16 @@ class View extends \Bs\Controller\AdminIface
 
         $template->insertHtml('body', $this->mailLog->getHtmlBody());
 
+        $css = <<<CSS
+.message-head {
+  padding: 10px;
+  border: 1px solid #CCC;
+  background: #EFEFEF;
+}
+CSS;
+
+        $template->appendCss($css);
+
         return $template;
     }
 
@@ -78,16 +88,19 @@ class View extends \Bs\Controller\AdminIface
         $xhtml = <<<HTML
 <div>
 
-  <div class="panel panel-default">
-    <div class="panel-heading clearfix">
-        Subject: <span var="subject">Mail Log</span> <br/>
-        Sent: <span var="created"></span> <br/>
-        From: <a href="#" var="from"></a> <br/>
-        To: <a href="#" var="to"></a>
+  <div class="tk-panel" data-panel-title="Mail Log" data-panel-icon="fa fa-envelope-o" var="panel">
+
+    <div class="message-head">
+        <b>Sent:</b> <span var="created"></span> <br/>
+        <b>From:</b> <a href="#" var="from"></a> <br/>
+        <b>To:</b> <a href="#" var="to"></a> <br/>
+        <b>Subject:</b> <span var="subject">Mail Log</span>
     </div>
-    <div class="panel-body">
-        <div var="body"></div>
-    </div>
+    
+    <p>&nbsp;</p>
+    
+    <div class="message-body" var="body"></div>
+
   </div>
     
 </div>
