@@ -9,10 +9,10 @@
         "mailog"
     ],
     "homepage": "http://www.tropotek.com/",
-    "time": "2017-09-27",
+    "time": "2018-10-03",
     "access": "admin",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.0.16",
     "authors":  [
          {
             "name": "Michael Mifsud",
