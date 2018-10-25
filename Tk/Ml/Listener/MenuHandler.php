@@ -41,9 +41,9 @@ class MenuHandler implements Subscriber
             $sideMenu = $config->getMenuManager()->getMenu($sideName);
 
             $type = $user->getRoleType();
+            $url = \Bs\Uri::createHomeUrl('/mailLogManager.html');
 
             if ($type == 'admin') {
-                $url = \Bs\Uri::createHomeUrl('/mailLogManager.html');
 //                if ($dropdownMenu)
 //                    $dropdownMenu->prepend(\Tk\Ui\Menu\Item::create('Mail Log', $url, 'fa fa-envelope'), 'About');
                 if ($sideMenu)
