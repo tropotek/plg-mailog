@@ -50,7 +50,7 @@ class Plugin extends \Tk\Plugin\Iface
      * Will only be called when activating the plugin in the
      * plugin control panel
      *
-     * @throws \Tk\Db\Exception
+     * @throws \Exception
      */
     function doActivate()
     {
