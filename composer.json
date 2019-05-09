@@ -30,6 +30,5 @@
         }
     },
     "require":  {
-        "ttek/tk-installers": "~2.0"
     }
 }
