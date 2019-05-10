@@ -21,13 +21,12 @@ class MenuHandler implements Subscriber
 
     /**
      * @param Event $event
-     * @throws \Tk\Db\Exception
      * @throws \Tk\Exception
      */
     public function onControllerInit(Event $event)
     {
         /** @var \Bs\Controller\Iface $controller */
-//        $this->controller = $event->get('controller');
+//        $this->controller = \Tk\Event\Event::findControllerObject($event);
 
         $config = \Bs\Config::getInstance();
         $user = $config->getUser();
