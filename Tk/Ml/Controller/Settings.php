@@ -124,6 +124,9 @@ class Settings extends \Bs\Controller\AdminIface
      */
     public function show()
     {
+
+        $this->getActionPanel()->append(\Tk\Ui\Link::createBtn('View Log', \Bs\Uri::createHomeUrl('/mailLogManager.html'), 'fa fa-envelope'));
+
         $template = parent::show();
         
         // Render the form

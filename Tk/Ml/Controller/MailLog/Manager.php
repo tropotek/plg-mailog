@@ -25,8 +25,8 @@ class Manager extends \Bs\Controller\AdminIface
     public function __construct()
     {
         $this->setPageTitle('Mail Log');
-        if ($this->getCrumbs())
-            $this->getCrumbs()->reset();
+//        if ($this->getCrumbs())
+//            $this->getCrumbs()->reset();
     }
 
 
