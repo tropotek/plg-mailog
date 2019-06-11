@@ -36,7 +36,7 @@ class Manager extends \Bs\Controller\AdminIface
      */
     public function doDefault(Request $request)
     {
-
+vd();
         $this->table = $this->getConfig()->createTable('mail-list');
         $this->table->setRenderer($this->getConfig()->createTableRenderer($this->table));
 

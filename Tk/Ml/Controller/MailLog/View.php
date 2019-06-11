@@ -3,7 +3,6 @@ namespace Tk\Ml\Controller\MailLog;
 
 use Tk\Request;
 use Dom\Template;
-use Tk\Form;
 
 /**
  * @author Michael Mifsud <info@tropotek.com>
@@ -12,11 +11,6 @@ use Tk\Form;
  */
 class View extends \Bs\Controller\AdminIface
 {
-
-    /**
-     * @var Form
-     */
-    protected $form = null;
 
     /**
      * @var \Tk\Ml\Db\MailLog
@@ -32,8 +26,6 @@ class View extends \Bs\Controller\AdminIface
         $this->setPageTitle('Mail Log View');
     }
 
-
-
     /**
      *
      * @param Request $request
@@ -46,7 +38,7 @@ class View extends \Bs\Controller\AdminIface
 
     /**
      * @return \Dom\Template
-     * @throws \Dom\Exception
+     * @throws \Exception
      */
     public function show()
     {
@@ -86,23 +78,18 @@ CSS;
     public function __makeTemplate()
     {
         $xhtml = <<<HTML
-<div>
 
-  <div class="tk-panel" data-panel-title="Mail Log" data-panel-icon="fa fa-envelope-o" var="panel">
+<div class="tk-panel" data-panel-title="Mail Log" data-panel-icon="fa fa-envelope-o" var="panel">
 
-    <div class="message-head">
-        <b>Sent:</b> <span var="created"></span> <br/>
-        <b>From:</b> <a href="#" var="from"></a> <br/>
-        <b>To:</b> <a href="#" var="to"></a> <br/>
-        <b>Subject:</b> <span var="subject">Mail Log</span>
-    </div>
-    
-    <p>&nbsp;</p>
-    
-    <div class="message-body" var="body"></div>
-
+  <div class="message-head">
+    <b>Sent:</b> <span var="created"></span> <br/>
+    <b>From:</b> <a href="#" var="from"></a> <br/>
+    <b>To:</b> <a href="#" var="to"></a> <br/>
+    <b>Subject:</b> <span var="subject">Mail Log</span>
   </div>
-    
+  <p>&nbsp;</p>
+  <div class="message-body" var="body"></div>
+
 </div>
 HTML;
 
