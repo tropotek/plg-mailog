@@ -36,22 +36,22 @@ class Manager extends \Bs\Controller\AdminIface
      */
     public function doDefault(Request $request)
     {
-vd();
+
         $this->table = $this->getConfig()->createTable('mail-list');
         $this->table->setRenderer($this->getConfig()->createTableRenderer($this->table));
 
-        //$this->table->addCell(new \Tk\Table\Cell\Checkbox('id'));
-        $this->table->addCell(new \Tk\Table\Cell\Text('subject'))->addCss('key')->setUrl(\Tk\Uri::create('/admin/mailLogView.html'));
-        $this->table->addCell(new \Tk\Table\Cell\Text('to'));
-        //$this->table->addCell(new \Tk\Table\Cell\Text('from'));
-        $this->table->addCell(new \Tk\Table\Cell\Date('created'))->setFormat(\Tk\Date::FORMAT_LONG_DATETIME);
+        //$this->table->appendCell(new \Tk\Table\Cell\Checkbox('id'));
+        $this->table->appendCell(new \Tk\Table\Cell\Text('subject'))->addCss('key')->setUrl(\Tk\Uri::create('/admin/mailLogView.html'));
+        $this->table->appendCell(new \Tk\Table\Cell\Text('to'));
+        //$this->table->appendCell(new \Tk\Table\Cell\Text('from'));
+        $this->table->appendCell(new \Tk\Table\Cell\Date('created'))->setFormat(\Tk\Date::FORMAT_LONG_DATETIME);
 
         // Filters
-        $this->table->addFilter(new Field\Input('keywords'))->setLabel('')->setAttr('placeholder', 'Keywords');
+        $this->table->appendFilter(new Field\Input('keywords'))->setLabel('')->setAttr('placeholder', 'Keywords');
 
         // Actions
-        $this->table->addAction(new \Tk\Table\Action\Csv($this->getConfig()->getDb()));
-        //$this->table->addAction(new \Tk\Table\Action\Delete());
+        $this->table->appendAction(new \Tk\Table\Action\Csv($this->getConfig()->getDb()));
+        //$this->table->appendAction(new \Tk\Table\Action\Delete());
 
         $list = \Tk\Ml\Db\MailLogMap::create()->findFiltered($this->table->getFilterValues(), $this->table->getTool('a.created DESC'));
         $this->table->setList($list);

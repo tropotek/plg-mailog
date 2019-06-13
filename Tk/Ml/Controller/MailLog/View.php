@@ -3,6 +3,7 @@ namespace Tk\Ml\Controller\MailLog;
 
 use Tk\Request;
 use Dom\Template;
+use Tk\Form;
 
 /**
  * @author Michael Mifsud <info@tropotek.com>
@@ -11,6 +12,11 @@ use Dom\Template;
  */
 class View extends \Bs\Controller\AdminIface
 {
+
+    /**
+     * @var Form
+     */
+    protected $form = null;
 
     /**
      * @var \Tk\Ml\Db\MailLog
@@ -26,6 +32,8 @@ class View extends \Bs\Controller\AdminIface
         $this->setPageTitle('Mail Log View');
     }
 
+
+
     /**
      *
      * @param Request $request
@@ -38,7 +46,7 @@ class View extends \Bs\Controller\AdminIface
 
     /**
      * @return \Dom\Template
-     * @throws \Exception
+     * @throws \Dom\Exception
      */
     public function show()
     {
@@ -78,7 +86,6 @@ CSS;
     public function __makeTemplate()
     {
         $xhtml = <<<HTML
-
 <div class="tk-panel" data-panel-title="Mail Log" data-panel-icon="fa fa-envelope-o" var="panel">
 
   <div class="message-head">
@@ -87,7 +94,9 @@ CSS;
     <b>To:</b> <a href="#" var="to"></a> <br/>
     <b>Subject:</b> <span var="subject">Mail Log</span>
   </div>
+    
   <p>&nbsp;</p>
+    
   <div class="message-body" var="body"></div>
 
 </div>
