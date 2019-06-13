@@ -56,19 +56,24 @@ class MailLogMap extends Mapper
         return $this->formMap;
     }
 
+    /**
+     * @param array|\Tk\Db\Filter $filter
+     * @param Tool $tool
+     * @return ArrayObject|MailLog[]
+     * @throws \Exception
+     */
+    public function findFiltered($filter, $tool = null)
+    {
+        return $this->selectFromFilter($this->makeQuery(\Tk\Db\Filter::create($filter)), $tool);
+    }
 
     /**
-     * Find filtered records
-     *
-     * @param array $filter
-     * @param Tool $tool
-     * @return ArrayObject|Subscriber[]
-     * @throws \Tk\Db\Exception
+     * @param \Tk\Db\Filter $filter
+     * @return \Tk\Db\Filter
      */
-    public function findFiltered($filter = array(), $tool = null)
+    public function makeQuery(\Tk\Db\Filter $filter)
     {
-        $from = sprintf('%s a ', $this->getDb()->quoteParameter($this->getTable()));
-        $where = '';
+        $filter->appendFrom('%s a', $this->quoteParameter($this->getTable()));
 
         if (!empty($filter['keywords'])) {
             $kw = '%' . $this->getDb()->escapeString($filter['keywords']) . '%';
@@ -82,36 +87,26 @@ class MailLogMap extends Mapper
                 $w .= sprintf('a.id = %d OR ', $id);
             }
             if ($w) {
-                $where .= '(' . substr($w, 0, -3) . ') AND ';
+                $filter->appendWhere('(%s) AND ', substr($w, 0, -3));
             }
         }
 
         if (!empty($filter['to'])) {
-            $where .= sprintf('a.to = %s AND ', $this->getDb()->quote($filter['to']));
+            $filter->appendWhere('a.to = %s AND ', $this->getDb()->quote($filter['to']));
         }
         if (!empty($filter['from'])) {
-            $where .= sprintf('a.from = %s AND ', $this->getDb()->quote($filter['from']));
+            $filter->appendWhere('a.from = %s AND ', $this->getDb()->quote($filter['from']));
         }
         if (!empty($filter['hash'])) {
-            $where .= sprintf('a.hash = %s AND ', $this->getDb()->quote($filter['hash']));
+            $filter->appendWhere('a.hash = %s AND ', $this->getDb()->quote($filter['hash']));
         }
 
         if (!empty($filter['exclude'])) {
-            if (!is_array($filter['exclude'])) $filter['exclude'] = array($filter['exclude']);
-            $w = '';
-            foreach ($filter['exclude'] as $v) {
-                $w .= sprintf('a.id != %d AND ', (int)$v);
-            }
-            if ($w) {
-                $where .= ' ('. rtrim($w, ' AND ') . ') AND ';
-            }
-        }
-        
-        if ($where) {
-            $where = substr($where, 0, -4);
+            $w = $this->makeMultiQuery($filter['exclude'], 'a.id', 'AND', '!=');
+            if ($w) $filter->appendWhere('(%s) AND ', $w);
         }
 
-        $res = $this->selectFrom($from, $where, $tool);
-        return $res;
+        return $filter;
     }
+
 }
