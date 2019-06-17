@@ -2,7 +2,6 @@
 namespace Tk\Ml\Controller;
 
 use Tk\Request;
-use Tk\Form;
 use Tk\Form\Event;
 use Tk\Form\Field;
 use Tk\Ml\Plugin;
@@ -12,13 +11,8 @@ use Tk\Ml\Plugin;
  * @link http://www.tropotek.com/
  * @license Copyright 2015 Michael Mifsud
  */
-class Settings extends \Bs\Controller\AdminIface
+class Settings extends \Bs\Controller\AdminEditIface
 {
-
-    /**
-     * @var Form
-     */
-    protected $form = null;
 
     /**
      * @var \Tk\Db\Data|null
@@ -42,37 +36,25 @@ class Settings extends \Bs\Controller\AdminIface
 
     /**
      * @param Request $request
-     * @throws Form\Exception
-     * @throws \Tk\Exception
+     * @throws \Exception
      */
     public function doDefault(Request $request)
     {
-        $this->form = $this->getConfig()->createForm('pluginSettings');
-        $this->form->setRenderer($this->getConfig()->createFormRenderer($this->form));
+        $this->setForm($this->getConfig()->createForm('pluginSettings'));
+        $this->getForm()->setRenderer($this->getConfig()->createFormRenderer($this->getForm()));
 
         // TODO: What if they have a menu object?????
-        $this->form->addField(new Field\Input('plugin.menu.nav.dropdown'))->setLabel('Dropdown Menu Name')
+        $this->getForm()->appendField(new Field\Input('plugin.menu.nav.dropdown'))->setLabel('Dropdown Menu Name')
             ->setRequired(true)->setValue('nav-dropdown');
-        $this->form->addField(new Field\Input('plugin.menu.nav.side'))->setLabel('Side Menu Name')
+        $this->getForm()->appendField(new Field\Input('plugin.menu.nav.side'))->setLabel('Side Menu Name')
             ->setRequired(true)->setValue('nav-side');
 
+        $this->getForm()->appendField(new Event\Button('update', array($this, 'doSubmit')));
+        $this->getForm()->appendField(new Event\Button('save', array($this, 'doSubmit')));
+        $this->getForm()->appendField(new Event\LinkButton('cancel', $this->getConfig()->getBackUrl()));
 
-
-//        $this->form->addField(new Field\Input('plugin.menu.admin.renderer'))->setLabel('Admin Menu Renderer Class')
-//            ->setRequired(true)->setNotes('Set the renderer class name that we need to catch to renderer the menu');
-//
-//        $this->form->addField(new Field\Input('plugin.menu.admin.var'))->setLabel('Admin Menu Var')
-//            ->setRequired(true)->setNotes('Set the template var where the mail log menu items will be appended to in the page template');
-//
-//        $this->form->addField(new Field\Textarea('plugin.menu.admin.content'))->setLabel('Admin Menu Item')
-//            ->setRequired(true)->setNotes('The content for the menu');
-        
-        $this->form->addField(new Event\Button('update', array($this, 'doSubmit')));
-        $this->form->addField(new Event\Button('save', array($this, 'doSubmit')));
-        $this->form->addField(new Event\LinkButton('cancel', $this->getConfig()->getBackUrl()));
-
-        $this->form->load($this->data->toArray());
-        $this->form->execute();
+        $this->getForm()->load($this->data->toArray());
+        $this->getForm()->execute();
     }
 
     /**
@@ -85,26 +67,7 @@ class Settings extends \Bs\Controller\AdminIface
         $values = $form->getValues();
         $this->data->replace($values);
 
-//        if (empty($values['plugin.menu.nav.dropdown']) ) {
-//            $form->addFieldError('plugin.menu.nav.dropdown', 'Please enter a valid Drop-down Menu name');
-//        }
-//
-//        if (empty($values['plugin.menu.nav.side']) ) {
-//            $form->addFieldError('plugin.menu.nav.side', 'Please enter a valid Side Menu name');
-//        }
-
-//        //if (empty($values['plugin.menu.admin.renderer']) || !class_exists($values['plugin.menu.admin.renderer'])) {
-//        if (empty($values['plugin.menu.admin.renderer']) ) {
-//            $form->addFieldError('plugin.menu.admin.renderer', 'Please enter a valid class name for the admin menu renderer');
-//        }
-//        if (empty($values['plugin.menu.admin.var'])) {
-//            $form->addFieldError('plugin.menu.admin.var', 'Please enter the var name for the menu in the admin page template');
-//        }
-//        if (empty($values['plugin.menu.admin.content'])) {
-//            $form->addFieldError('plugin.menu.admin.content', 'Please enter the menu item content link');
-//        }
-        
-        if ($this->form->hasErrors()) {
+        if ($form->hasErrors()) {
             return;
         }
         
@@ -117,6 +80,11 @@ class Settings extends \Bs\Controller\AdminIface
         }
     }
 
+    public function initActionPanel()
+    {
+        $this->getActionPanel()->append(\Tk\Ui\Link::createBtn('View Log', \Bs\Uri::createHomeUrl('/mailLogManager.html'), 'fa fa-envelope'));
+    }
+
     /**
      * show()
      *
@@ -124,13 +92,11 @@ class Settings extends \Bs\Controller\AdminIface
      */
     public function show()
     {
-
-        $this->getActionPanel()->append(\Tk\Ui\Link::createBtn('View Log', \Bs\Uri::createHomeUrl('/mailLogManager.html'), 'fa fa-envelope'));
-
+        $this->initActionPanel();
         $template = parent::show();
         
         // Render the form
-        $template->appendTemplate('form', $this->form->getRenderer()->show());
+        $template->appendTemplate('form', $this->getForm()->getRenderer()->show());
 
         return $template;
     }

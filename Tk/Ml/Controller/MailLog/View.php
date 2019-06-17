@@ -32,8 +32,6 @@ class View extends \Bs\Controller\AdminIface
         $this->setPageTitle('Mail Log View');
     }
 
-
-
     /**
      *
      * @param Request $request

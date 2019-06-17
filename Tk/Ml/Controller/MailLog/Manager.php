@@ -10,14 +10,8 @@ use Tk\Form\Field;
  * @link http://www.tropotek.com/
  * @license Copyright 2015 Michael Mifsud
  */
-class Manager extends \Bs\Controller\AdminIface
+class Manager extends \Bs\Controller\AdminManagerIface
 {
-
-    /**
-     * @var \Tk\Table
-     */
-    protected $table = null;
-
 
     /**
      * @throws \Exception
@@ -37,24 +31,24 @@ class Manager extends \Bs\Controller\AdminIface
     public function doDefault(Request $request)
     {
 
-        $this->table = $this->getConfig()->createTable('mail-list');
-        $this->table->setRenderer($this->getConfig()->createTableRenderer($this->table));
+        $this->setTable($this->getConfig()->createTable('mail-list'));
+        $this->getTable()->setRenderer($this->getConfig()->createTableRenderer($this->getTable()));
 
-        //$this->table->appendCell(new \Tk\Table\Cell\Checkbox('id'));
-        $this->table->appendCell(new \Tk\Table\Cell\Text('subject'))->addCss('key')->setUrl(\Tk\Uri::create('/admin/mailLogView.html'));
-        $this->table->appendCell(new \Tk\Table\Cell\Text('to'));
-        //$this->table->appendCell(new \Tk\Table\Cell\Text('from'));
-        $this->table->appendCell(new \Tk\Table\Cell\Date('created'))->setFormat(\Tk\Date::FORMAT_LONG_DATETIME);
+        //$this->getTable()->appendCell(new \Tk\Table\Cell\Checkbox('id'));
+        $this->getTable()->appendCell(new \Tk\Table\Cell\Text('subject'))->addCss('key')->setUrl(\Tk\Uri::create('/admin/mailLogView.html'));
+        $this->getTable()->appendCell(new \Tk\Table\Cell\Text('to'));
+        //$this->getTable()->appendCell(new \Tk\Table\Cell\Text('from'));
+        $this->getTable()->appendCell(new \Tk\Table\Cell\Date('created'))->setFormat(\Tk\Date::FORMAT_LONG_DATETIME);
 
         // Filters
-        $this->table->appendFilter(new Field\Input('keywords'))->setLabel('')->setAttr('placeholder', 'Keywords');
+        $this->getTable()->appendFilter(new Field\Input('keywords'))->setLabel('')->setAttr('placeholder', 'Keywords');
 
         // Actions
-        $this->table->appendAction(new \Tk\Table\Action\Csv($this->getConfig()->getDb()));
+        $this->getTable()->appendAction(new \Tk\Table\Action\Csv($this->getConfig()->getDb()));
         //$this->table->appendAction(new \Tk\Table\Action\Delete());
 
-        $list = \Tk\Ml\Db\MailLogMap::create()->findFiltered($this->table->getFilterValues(), $this->table->getTool('a.created DESC'));
-        $this->table->setList($list);
+        $list = \Tk\Ml\Db\MailLogMap::create()->findFiltered($this->getTable()->getFilterValues(), $this->getTable()->getTool('a.created DESC'));
+        $this->getTable()->setList($list);
 
     }
 
@@ -66,7 +60,7 @@ class Manager extends \Bs\Controller\AdminIface
     {
         $template = parent::show();
 
-        $template->appendTemplate('table', $this->table->getRenderer()->show());
+        $template->appendTemplate('table', $this->getTable()->getRenderer()->show());
         
         return $template;
     }
