@@ -97,7 +97,7 @@ class MailLog extends Model implements \Tk\ValidInterface
      * @param string $to
      * @return $this
      */
-    public function setTo(string $to): void
+    public function setTo(string $to): MailLog
     {
         $this->to = $to;
         return $this;
@@ -115,7 +115,7 @@ class MailLog extends Model implements \Tk\ValidInterface
      * @param string $from
      * @return $this
      */
-    public function setFrom(string $from): void
+    public function setFrom(string $from): MailLog
     {
         $this->from = $from;
         return $this;
@@ -133,7 +133,7 @@ class MailLog extends Model implements \Tk\ValidInterface
      * @param string $subject
      * @return $this
      */
-    public function setSubject(string $subject): void
+    public function setSubject(string $subject): MailLog
     {
         $this->subject = $subject;
         return $this;
@@ -151,7 +151,7 @@ class MailLog extends Model implements \Tk\ValidInterface
      * @param string $body
      * @return $this
      */
-    public function setBody(string $body): void
+    public function setBody(string $body): MailLog
     {
         $this->body = $body;
         return $this;
@@ -169,7 +169,7 @@ class MailLog extends Model implements \Tk\ValidInterface
      * @param string $hash
      * @return $this
      */
-    public function setHash(string $hash): void
+    public function setHash(string $hash): MailLog
     {
         $this->hash = $hash;
         return $this;
@@ -187,7 +187,7 @@ class MailLog extends Model implements \Tk\ValidInterface
      * @param string $notes
      * @return $this
      */
-    public function setNotes(string $notes): void
+    public function setNotes(string $notes): MailLog
     {
         $this->notes = $notes;
         return $this;
@@ -205,7 +205,7 @@ class MailLog extends Model implements \Tk\ValidInterface
      * @param \DateTime $created
      * @return $this
      */
-    public function setCreated(\DateTime $created): void
+    public function setCreated(\DateTime $created): MailLog
     {
         $this->created = $created;
         return $this;
