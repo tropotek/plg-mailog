@@ -23,6 +23,7 @@ class MailLogMap extends Mapper
     {
         if (!$this->dbMap) {
             $this->setMarkDeleted('del');
+            $this->setTable(\Tk\Ml\Plugin::$DB_TABLE);
             $this->dbMap = new \Tk\DataMap\DataMap();
             $this->dbMap->addPropertyMap(new Db\Integer('id'), 'key');
             $this->dbMap->addPropertyMap(new Db\Text('to'));

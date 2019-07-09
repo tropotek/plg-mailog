@@ -1,7 +1,7 @@
 <?php
 namespace Tk\Ml;
 
-use Tk\Event\Dispatcher;
+use Tk\EventDispatcher\EventDispatcher;
 
 
 /**
@@ -11,6 +11,20 @@ use Tk\Event\Dispatcher;
  */
 class Plugin extends \Tk\Plugin\Iface
 {
+
+    /**
+     * @var string
+     */
+    public static $DB_TABLE = 'mail_log';
+
+
+    public function __construct($id, $name)
+    {
+        parent::__construct($id, $name);
+        if ($this->getConfig()->get('plg.mail_log.table'))
+            self::$DB_TABLE = $this->getConfig()->get('plg.mail_log.table');
+    }
+
 
     /**
      * A helper method to get the Plugin instance globally
@@ -37,7 +51,7 @@ class Plugin extends \Tk\Plugin\Iface
     {
         include dirname(__FILE__) . '/config.php';
 
-        /** @var Dispatcher $dispatcher */
+        /** @var EventDispatcher $dispatcher */
         $dispatcher = \App\Config::getInstance()->getEventDispatcher();
         $dispatcher->addSubscriber(new \Tk\Ml\Listener\MailLogHandler());
         $dispatcher->addSubscriber(new \Tk\Ml\Listener\MenuHandler());
@@ -57,10 +71,24 @@ class Plugin extends \Tk\Plugin\Iface
         // TODO: Implement doActivate() method.
 
         $db = $this->getConfig()->getDb();
-        $migrate = new \Tk\Util\SqlMigrate($db);
-        $migrate->setTempPath($this->getConfig()->getTempPath());
-        $sqlPath = dirname(__FILE__) . '/sql';
-        $migrate->migrate($sqlPath);
+
+        $table = self::$DB_TABLE;
+        $sql = <<<SQL
+CREATE TABLE IF NOT EXISTS `$table` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `to` text,
+  `from` text,
+  `subject` text,
+  `body` text,
+  `hash` varchar(64) DEFAULT NULL,
+  `notes` text,
+  `del` TINYINT(1) NOT NULL DEFAULT 0,
+  `created` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY (`hash`)
+) ENGINE=InnoDB;
+SQL;
+        $db->exec($sql);
 
         // Init Settings
         $data = $this->getData();
@@ -85,7 +113,7 @@ class Plugin extends \Tk\Plugin\Iface
     {
         // Init Plugin Settings
 //        $config = \Tk\Config::getInstance();
-//        $db = \App\Factory::getDb();
+//        $db = $config->getDb();
 
 //        $migrate = new \Tk\Util\SqlMigrate($db);
 //        $migrate->setTempPath($config->getTempPath());
@@ -119,8 +147,8 @@ class Plugin extends \Tk\Plugin\Iface
 //        $data = \Tk\Db\Data::create($this->getName());
 //        $data->clear();
 //        $data->save();
-        if ($db->hasTable('mail_log'))
-            $db->query('DROP TABLE mail_log');
+        if ($db->hasTable(self::$DB_TABLE))
+            $db->query('DROP TABLE '. self::$DB_TABLE);
 
     }
 
