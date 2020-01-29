@@ -29,7 +29,7 @@ class MenuHandler implements Subscriber
 //        $this->controller = \Tk\Event\Event::findControllerObject($event);
 
         $config = \Bs\Config::getInstance();
-        $user = $config->getUser();
+        $user = $config->getAuthUser();
 
         if ($user) {
 
