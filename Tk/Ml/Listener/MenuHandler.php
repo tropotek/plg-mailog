@@ -39,7 +39,7 @@ class MenuHandler implements Subscriber
             $dropdownMenu = $config->getMenuManager()->getMenu($dropdownName);
             $sideMenu = $config->getMenuManager()->getMenu($sideName);
 
-            $type = $user->getRoleType();
+            $type = $user->getType();
             $url = \Bs\Uri::createHomeUrl('/mailLogManager.html');
 
             if ($type == 'admin') {
