@@ -1,6 +1,8 @@
 <?php
 namespace Tk\Ml\Db;
 
+use Bs\Db\Traits\CreatedTrait;
+use Bs\Db\Traits\ForeignModelTrait;
 use Tk\Db\Map\Model;
 
 /**
@@ -10,11 +12,23 @@ use Tk\Db\Map\Model;
  */
 class MailLog extends Model implements \Tk\ValidInterface
 {
+    use ForeignModelTrait;
+    use CreatedTrait;
 
     /**
      * @var int
      */
     public $id = 0;
+
+    /**
+     * @var string
+     */
+    public $fkey = 'system';
+
+    /**
+     * @var int
+     */
+    public $fid = 0;
 
     /**
      * @var string
@@ -60,7 +74,7 @@ class MailLog extends Model implements \Tk\ValidInterface
      */
     public function __construct()
     {
-        $this->created = new \DateTime();
+        $this->_CreatedTrait();
     }
 
     /**
@@ -78,11 +92,18 @@ class MailLog extends Model implements \Tk\ValidInterface
     }
 
     /**
-     *
+     * @param string $baseurl  The url page
+     * @param string|\Tk\Db\ModelInterface $fkey
+     * @param int $fid
+     * @return string
      */
-    public function save()
+    public static function createMailLogUrl($baseurl, $fkey = 'system', $fid = 0)
     {
-        parent::save();
+        if (is_object($fkey))
+            $fkey = \Tk\ObjectUtil::basename($fkey);
+        if (class_exists($fkey))
+            $fkey = \Tk\ObjectUtil::basename($fkey);
+        return '/mailLog/'.$fkey.'/'.$fid. '/' . $baseurl;
     }
 
     /**

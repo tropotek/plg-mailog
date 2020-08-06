@@ -2,6 +2,7 @@
 namespace Tk\Ml\Db;
 
 use App\Controller\Subscriber;
+use Tk\Db\Map\Model;
 use Tk\Db\Tool;
 use Tk\Db\Map\ArrayObject;
 use Tk\DataMap\Db;
@@ -26,6 +27,8 @@ class MailLogMap extends Mapper
             $this->setTable(\Tk\Ml\Plugin::$DB_TABLE);
             $this->dbMap = new \Tk\DataMap\DataMap();
             $this->dbMap->addPropertyMap(new Db\Integer('id'), 'key');
+            $this->dbMap->addPropertyMap(new Db\Text('uid'));       // use this for the institutionId or group
+            $this->dbMap->addPropertyMap(new Db\Integer('fid'));    //
             $this->dbMap->addPropertyMap(new Db\Text('to'));
             $this->dbMap->addPropertyMap(new Db\Text('from'));
             $this->dbMap->addPropertyMap(new Db\Text('subject'));
@@ -47,6 +50,8 @@ class MailLogMap extends Mapper
         if (!$this->formMap) {
             $this->formMap = new \Tk\DataMap\DataMap();
             $this->formMap->addPropertyMap(new Form\Integer('id'), 'key');
+//            $this->formMap->addPropertyMap(new Form\Text('fkey'));
+//            $this->formMap->addPropertyMap(new Form\Integer('fid'));
             $this->formMap->addPropertyMap(new Form\Text('to'));
             $this->formMap->addPropertyMap(new Form\Text('from'));
             $this->formMap->addPropertyMap(new Form\Text('subject'));
@@ -90,6 +95,17 @@ class MailLogMap extends Mapper
             if ($w) {
                 $filter->appendWhere('(%s) AND ', substr($w, 0, -3));
             }
+        }
+
+        if (!empty($filter['model']) && $filter['model'] instanceof Model) {
+            $filter['fid'] = $filter['model']->getId();
+            $filter['fkey'] = get_class($filter['model']);
+        }
+        if (isset($filter['fid'])) {
+            $filter->appendWhere('a.fid = %d AND ', (int)$filter['fid']);
+        }
+        if (isset($filter['fkey'])) {
+            $filter->appendWhere('a.fkey = %s AND ', $this->quote($filter['fkey']));
         }
 
         if (!empty($filter['to'])) {

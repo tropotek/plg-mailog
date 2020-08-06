@@ -1,6 +1,7 @@
 <?php
 namespace Tk\Ml\Controller;
 
+use Tk\Ml\Db\MailLog;
 use Tk\Request;
 use Tk\Form\Event;
 use Tk\Form\Field;
@@ -40,6 +41,12 @@ class Settings extends \Bs\Controller\AdminEditIface
      */
     public function doDefault(Request $request)
     {
+        if (!$this->getAuthUser()->isAdmin()) {
+            \Tk\
+            Alert::addWarning('You do not have permission to view this page');
+            \Uni\Uri::createHomeUrl('/index.html');
+        }
+
         $this->setForm($this->getConfig()->createForm('pluginSettings'));
         $this->getForm()->setRenderer($this->getConfig()->createFormRenderer($this->getForm()));
 
@@ -82,7 +89,10 @@ class Settings extends \Bs\Controller\AdminEditIface
 
     public function initActionPanel()
     {
-        $this->getActionPanel()->append(\Tk\Ui\Link::createBtn('View Log', \Bs\Uri::createHomeUrl('/mailLogManager.html'), 'fa fa-envelope'));
+        $this->getActionPanel()->append(
+            \Tk\Ui\Link::createBtn('View Log',
+                \Bs\Uri::createHomeUrl(MailLog::createMailLogUrl('/manager.html')), 'fa fa-envelope')
+        );
     }
 
     /**

@@ -2,6 +2,7 @@
 namespace Tk\Ml;
 
 use Tk\EventDispatcher\EventDispatcher;
+use Tk\Ml\Db\MailLog;
 
 
 /**
@@ -76,6 +77,8 @@ class Plugin extends \Tk\Plugin\Iface
         $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS `$table` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `fkey` VARCHAR(64) NOT NULL DEFAULT '',           -- A foreign key as a string (usually the object name or group name)
+  `fid` INTEGER NOT NULL DEFAULT 0,                 -- foreign_id
   `to` text,
   `from` text,
   `subject` text,
@@ -85,6 +88,8 @@ CREATE TABLE IF NOT EXISTS `$table` (
   `del` TINYINT(1) NOT NULL DEFAULT 0,
   `created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
+  KEY `fkey` (`fkey`),
+  KEY `fid` (`fkey`, `fid`)
   KEY (`hash`)
 ) ENGINE=InnoDB;
 SQL;
@@ -158,7 +163,7 @@ SQL;
      */
     public function getSettingsUrl()
     {
-        return \Bs\Uri::createHomeUrl('/mailogSettings.html');
+        return \Bs\Uri::createHomeUrl(MailLog::createMailLogUrl('/settings.html'));
     }
 
 }
