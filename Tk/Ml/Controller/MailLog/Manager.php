@@ -29,18 +29,14 @@ class Manager extends \Bs\Controller\AdminManagerIface
      * @param Request $request
      * @throws \Exception
      */
-    public function doDefault(Request $request, $fkey = 'system', $fid = 0)
+    public function doDefault(Request $request, $type='', $fkey = 'system', $fid = 0)
     {
-//        $fkey = 'system';
-//        $fid = 0;
-//        // TODO get these from the URL params
-
         $this->setTable($this->getConfig()->createTable('mail-list'));
         $this->getTable()->setRenderer($this->getConfig()->createTableRenderer($this->getTable()));
 
         //$this->getTable()->appendCell(new \Tk\Table\Cell\Checkbox('id'));
         $this->getTable()->appendCell(new \Tk\Table\Cell\Text('subject'))->addCss('key')->setUrl(
-            \Tk\Uri::create(MailLog::createMailLogUrl('/view.html', $fkey, $fid))
+            \Bs\Uri::createHomeUrl(MailLog::createMailLogUrl('/view.html', $fkey, $fid))
         );
         $this->getTable()->appendCell(new \Tk\Table\Cell\Text('to'));
         //$this->getTable()->appendCell(new \Tk\Table\Cell\Text('from'));
@@ -52,6 +48,10 @@ class Manager extends \Bs\Controller\AdminManagerIface
         // Actions
         $this->getTable()->appendAction(new \Tk\Table\Action\Csv($this->getConfig()->getDb()));
         //$this->table->appendAction(new \Tk\Table\Action\Delete());
+
+        $filter = $this->getTable()->getFilterValues();
+        $filter['fkey'] = $fkey;
+        $filter['fid'] = $fid;
 
         $list = \Tk\Ml\Db\MailLogMap::create()->findFiltered($this->getTable()->getFilterValues(), $this->getTable()->getTool('a.created DESC'));
         $this->getTable()->setList($list);

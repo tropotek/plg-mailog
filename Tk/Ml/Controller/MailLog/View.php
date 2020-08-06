@@ -37,7 +37,7 @@ class View extends \Bs\Controller\AdminIface
      * @param Request $request
      * @throws \Exception
      */
-    public function doDefault(Request $request)
+    public function doDefault(Request $request, $type='', $fkey = 'system', $fid = 0)
     {
         $this->mailLog = \Tk\Ml\Db\MailLogMap::create()->find($request->get('mailLogId'));
     }

@@ -103,7 +103,7 @@ class MailLog extends Model implements \Tk\ValidInterface
             $fkey = \Tk\ObjectUtil::basename($fkey);
         if (class_exists($fkey))
             $fkey = \Tk\ObjectUtil::basename($fkey);
-        return '/mailLog/'.$fkey.'/'.$fid. '/' . $baseurl;
+        return '/mailLog/'.$fkey.'/'.$fid. '/' . trim($baseurl, '/');
     }
 
     /**

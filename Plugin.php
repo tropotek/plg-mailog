@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `$table` (
   `created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fkey` (`fkey`),
-  KEY `fid` (`fkey`, `fid`)
+  KEY `fid` (`fkey`, `fid`),
   KEY (`hash`)
 ) ENGINE=InnoDB;
 SQL;
