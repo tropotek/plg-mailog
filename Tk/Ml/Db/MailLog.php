@@ -4,6 +4,7 @@ namespace Tk\Ml\Db;
 use Bs\Db\Traits\CreatedTrait;
 use Bs\Db\Traits\ForeignModelTrait;
 use Tk\Db\Map\Model;
+use Tk\ObjectUtil;
 
 /**
  * @author Michael Mifsud <info@tropotek.com>
@@ -99,10 +100,10 @@ class MailLog extends Model implements \Tk\ValidInterface
      */
     public static function createMailLogUrl($baseurl, $fkey = 'system', $fid = 0)
     {
-        if (is_object($fkey))
-            $fkey = \Tk\ObjectUtil::basename($fkey);
-        if (class_exists($fkey))
-            $fkey = \Tk\ObjectUtil::basename($fkey);
+        if (is_object($fkey)) {
+            $fid = $fkey->getId();
+            $fkey = str_replace('\\', '_', get_class($fkey));
+        }
         return '/mailLog/'.$fkey.'/'.$fid. '/' . trim($baseurl, '/');
     }
 

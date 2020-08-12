@@ -31,6 +31,8 @@ class Manager extends \Bs\Controller\AdminManagerIface
      */
     public function doDefault(Request $request, $type='', $fkey = 'system', $fid = 0)
     {
+        $fkey = str_replace('_', '\\',   \Tk\ObjectUtil::getClass($fkey));
+
         $this->setTable($this->getConfig()->createTable('mail-list'));
         $this->getTable()->setRenderer($this->getConfig()->createTableRenderer($this->getTable()));
 

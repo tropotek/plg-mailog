@@ -39,6 +39,7 @@ class View extends \Bs\Controller\AdminIface
      */
     public function doDefault(Request $request, $type='', $fkey = 'system', $fid = 0)
     {
+        $fkey = str_replace('_', '\\', get_class($fkey));
         $this->mailLog = \Tk\Ml\Db\MailLogMap::create()->find($request->get('mailLogId'));
     }
 
