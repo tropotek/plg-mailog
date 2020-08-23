@@ -46,7 +46,11 @@ class MailLogHandler implements Subscriber
             return;
         }
 
-        $mailLog = \Tk\Ml\Db\MailLog::createFromMessage($message);
+        $mailLog = $event->get('mailLog');
+        if (!$mailLog) {
+            $mailLog = \Tk\Ml\Db\MailLog::createFromMessage($message);
+            $event->set('mailLog', $mailLog);
+        }
         $mailLog->save();
     }
 
