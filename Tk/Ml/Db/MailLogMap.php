@@ -27,8 +27,8 @@ class MailLogMap extends Mapper
             $this->setTable(\Tk\Ml\Plugin::$DB_TABLE);
             $this->dbMap = new \Tk\DataMap\DataMap();
             $this->dbMap->addPropertyMap(new Db\Integer('id'), 'key');
-            $this->dbMap->addPropertyMap(new Db\Text('uid'));       // use this for the institutionId or group
-            $this->dbMap->addPropertyMap(new Db\Integer('fid'));    //
+            $this->dbMap->addPropertyMap(new Db\Text('fkey'));
+            $this->dbMap->addPropertyMap(new Db\Integer('fid'));
             $this->dbMap->addPropertyMap(new Db\Text('to'));
             $this->dbMap->addPropertyMap(new Db\Text('from'));
             $this->dbMap->addPropertyMap(new Db\Text('subject'));
