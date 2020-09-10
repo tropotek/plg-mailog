@@ -102,6 +102,16 @@ SQL;
         $url = \Bs\Uri::createHomeUrl('/mailLogManager.html');
         $data->set('plugin.menu.admin.content', '<li><a href="'.htmlentities($url->toString()).'"><i class="fa fa-envelope-o fa-fw"></i> <span>Email Log</span></a></li>');
         $data->save();
+/* Update script
+        alter table mail_log add fkey varchar(64) default '' not null after id;
+        alter table mail_log add fid int default 0 not null after fkey;
+        create index mail_log_fkey on mail_log (`fkey`);
+        create index mail_log_fid on mail_log (`fkey`, `fid`);
+
+*/
+
+
+
     }
 
     /**
