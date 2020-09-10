@@ -1,32 +1,32 @@
 {
-    "name": "ttek-plg/mailog",
-    "type": "ttek-plugin",
-    "description": "Log and track any mail sent through the PHP mailGateway",
-    "keywords":  [
-        "tropotek",
-        "plugin",
-        "tk2",
-        "mailog"
-    ],
-    "homepage": "http://www.tropotek.com/",
-    "time": "2020-09-11",
-    "license": "MIT",
-    "authors":  [
-         {
-            "name": "Michael Mifsud",
-            "homepage": "http://www.tropotek.com/"
-        }
-    ],
-    "autoload":  {
-        "psr-0":  {
-            "Tk\\Ml\\": ""
-        }
-    },
-    "extra":  {
-        "branch-alias":  {
-            "dev-master": "1.0.x-dev"
-        }
-    },
-    "require":  {
+  "name": "ttek-plg/mailog",
+  "type": "ttek-plugin",
+  "description": "Log and track any mail sent through the PHP mailGateway",
+  "keywords": [
+    "tropotek",
+    "plugin",
+    "tk2",
+    "mailog"
+  ],
+  "homepage": "http://www.tropotek.com/",
+  "time": "2017-09-27",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Michael Mifsud",
+      "homepage": "http://www.tropotek.com/"
     }
+  ],
+  "autoload": {
+    "psr-0": {
+      "Tk\\Ml\\": ""
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  },
+  "require": {
+  }
 }
