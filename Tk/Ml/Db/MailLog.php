@@ -102,8 +102,9 @@ class MailLog extends Model implements \Tk\ValidInterface
     {
         if (is_object($fkey)) {
             $fid = $fkey->getId();
-            $fkey = str_replace('\\', '_', get_class($fkey));
+            $fkey = get_class($fkey);
         }
+        $fkey = str_replace('\\', '_', $fkey);
         return '/mailLog/'.$fkey.'/'.$fid. '/' . trim($baseurl, '/');
     }
 
