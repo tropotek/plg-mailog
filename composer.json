@@ -1,6 +1,6 @@
 {
-  "name": "ttek-plg/mailog",
-  "type": "ttek-plugin",
+  "name": "uom-plg/mailog",
+  "type": "uom-plugin",
   "description": "Log and track any mail sent through the PHP mailGateway",
   "keywords": [
     "tropotek",
