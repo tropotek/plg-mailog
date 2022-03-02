@@ -1,6 +1,7 @@
 <?php
 namespace Tk\Ml\Controller\MailLog;
 
+use Tk\Ml\Db\MailLog;
 use Tk\Request;
 use Dom\Template;
 use Tk\Form\Field;
@@ -28,14 +29,17 @@ class Manager extends \Bs\Controller\AdminManagerIface
      * @param Request $request
      * @throws \Exception
      */
-    public function doDefault(Request $request)
+    public function doDefault(Request $request, $type='', $fkey = 'system', $fid = 0)
     {
+        $fkey = str_replace('_', '\\',   \Tk\ObjectUtil::getClass($fkey));
 
         $this->setTable($this->getConfig()->createTable('mail-list'));
         $this->getTable()->setRenderer($this->getConfig()->createTableRenderer($this->getTable()));
 
         //$this->getTable()->appendCell(new \Tk\Table\Cell\Checkbox('id'));
-        $this->getTable()->appendCell(new \Tk\Table\Cell\Text('subject'))->addCss('key')->setUrl(\Tk\Uri::create('/admin/mailLogView.html'));
+        $this->getTable()->appendCell(new \Tk\Table\Cell\Text('subject'))->addCss('key')->setUrl(
+            \Bs\Uri::createHomeUrl(MailLog::createMailLogUrl('/view.html', $fkey, $fid))
+        );
         $this->getTable()->appendCell(new \Tk\Table\Cell\Text('to'));
         //$this->getTable()->appendCell(new \Tk\Table\Cell\Text('from'));
         $this->getTable()->appendCell(new \Tk\Table\Cell\Date('created'))->setFormat(\Tk\Date::FORMAT_LONG_DATETIME);
@@ -46,6 +50,10 @@ class Manager extends \Bs\Controller\AdminManagerIface
         // Actions
         $this->getTable()->appendAction(new \Tk\Table\Action\Csv($this->getConfig()->getDb()));
         //$this->table->appendAction(new \Tk\Table\Action\Delete());
+
+        $filter = $this->getTable()->getFilterValues();
+        $filter['fkey'] = $fkey;
+        $filter['fid'] = $fid;
 
         $list = \Tk\Ml\Db\MailLogMap::create()->findFiltered($this->getTable()->getFilterValues(), $this->getTable()->getTool('a.created DESC'));
         $this->getTable()->setList($list);

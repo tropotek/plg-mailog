@@ -1,6 +1,25 @@
 #CHANGELOG#
 
-Ver 1.0.38 [2020-11-23]:
+Ver 1.0.42 [2021-05-10]:
+-------------------------------
+
+
+Ver 1.0.40 [2020-11-23]:
+-------------------------------
+  - Tagging and releasing branch `1.0` with version `1.0.36`.
+  - Tagging and releasing branch `1.0` with version `1.0.34`.
+  - Tagging and releasing branch `M	Tk/Ml/Listener/MenuHandler.php` with version `1.0.32`.
+
+
+Ver 1.0.36 [2020-09-11]:
+-------------------------------
+
+
+Ver 1.0.34 [2020-09-10]:
+-------------------------------
+
+
+Ver 1.0.32 [2020-02-25]:
 -------------------------------
 
 

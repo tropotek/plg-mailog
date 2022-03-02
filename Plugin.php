@@ -2,6 +2,7 @@
 namespace Tk\Ml;
 
 use Tk\EventDispatcher\EventDispatcher;
+use Tk\Ml\Db\MailLog;
 
 
 /**
@@ -76,6 +77,8 @@ class Plugin extends \Tk\Plugin\Iface
         $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS `$table` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `fkey` VARCHAR(64) NOT NULL DEFAULT '',           -- A foreign key as a string (usually the object name or group name)
+  `fid` INTEGER NOT NULL DEFAULT 0,                 -- foreign_id
   `to` text,
   `from` text,
   `subject` text,
@@ -85,6 +88,8 @@ CREATE TABLE IF NOT EXISTS `$table` (
   `del` TINYINT(1) NOT NULL DEFAULT 0,
   `created` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
+  KEY `fkey` (`fkey`),
+  KEY `fid` (`fkey`, `fid`),
   KEY (`hash`)
 ) ENGINE=InnoDB;
 SQL;
@@ -97,6 +102,16 @@ SQL;
         $url = \Bs\Uri::createHomeUrl('/mailLogManager.html');
         $data->set('plugin.menu.admin.content', '<li><a href="'.htmlentities($url->toString()).'"><i class="fa fa-envelope-o fa-fw"></i> <span>Email Log</span></a></li>');
         $data->save();
+/* Update script
+        alter table mail_log add fkey varchar(64) default '' not null after id;
+        alter table mail_log add fid int default 0 not null after fkey;
+        create index mail_log_fkey on mail_log (`fkey`);
+        create index mail_log_fid on mail_log (`fkey`, `fid`);
+
+*/
+
+
+
     }
 
     /**
@@ -158,7 +173,7 @@ SQL;
      */
     public function getSettingsUrl()
     {
-        return \Bs\Uri::createHomeUrl('/mailogSettings.html');
+        return \Bs\Uri::createHomeUrl(MailLog::createMailLogUrl('/settings.html'));
     }
 
 }

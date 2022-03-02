@@ -3,6 +3,7 @@ namespace Tk\Ml\Listener;
 
 use Tk\Event\Subscriber;
 use Tk\Event\Event;
+use Tk\Ml\Db\MailLog;
 use Tk\Ml\Plugin;
 
 /**
@@ -32,7 +33,6 @@ class MenuHandler implements Subscriber
         $user = $config->getAuthUser();
 
         if ($user) {
-
             $dropdownName = Plugin::getInstance()->getData()->get('plugin.menu.nav.dropdown', 'nav-dropdown');
             $sideName = Plugin::getInstance()->getData()->get('plugin.menu.nav.side', 'nav-side');
 
@@ -40,23 +40,15 @@ class MenuHandler implements Subscriber
             $sideMenu = $config->getMenuManager()->getMenu($sideName);
 
             $type = $user->getType();
-            $url = \Bs\Uri::createHomeUrl('/mailLogManager.html');
+
 
             if ($type == 'admin') {
+                $url = \Bs\Uri::createHomeUrl(MailLog::createMailLogUrl('/manager.html'));
 //                if ($dropdownMenu)
 //                    $dropdownMenu->prepend(\Tk\Ui\Menu\Item::create('Mail Log', $url, 'fa fa-envelope'), 'About');
                 if ($sideMenu)
                     $sideMenu->append(\Tk\Ui\Menu\Item::create('Mail Log', $url, 'fa fa-envelope'));
             }
-
-            if ($type == 'client') {
-                // TODO: how do we deal with this ?????
-            }
-
-            if ($type == 'staff') {
-                // TODO: how do we deal with this ?????
-            }
-
         }
 
     }

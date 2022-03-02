@@ -1,6 +1,7 @@
 <?php
 namespace Tk\Ml\Listener;
 
+use Tk\ConfigTrait;
 use Tk\Event\Subscriber;
 
 
@@ -14,20 +15,18 @@ use Tk\Event\Subscriber;
  */
 class MailLogHandler implements Subscriber
 {
+    use ConfigTrait;
 
     /**
      * @param \Tk\Mail\MailEvent $event
      */
     public function preSend(\Tk\Mail\MailEvent $event)
     {
-        $config = \App\Config::getInstance();
         $message = $event->getMessage();
         $headers = $message->getHeadersList();
         if ($message && !array_key_exists('X-Exception', $headers)) {
-
-            $title = $config->get('site.title');
+            $title = $this->getConfig()->get('site.title');
             if (!$title) $title = 'Tk2 Site';
-
             $message->addHeader('X-System-Message', $title);
         }
 
@@ -38,17 +37,20 @@ class MailLogHandler implements Subscriber
      */
     public function postSend(\Tk\Mail\MailEvent $event)
     {
-        $config = \App\Config::getInstance();
         $message = $event->getMessage();
 
         if (!$message || array_key_exists('X-Exception', $message->getHeadersList())) {
             return;
         }
-        if (!$config->isDebug() && current($message->getTo()) == $config->get('site.email')) {
+        if (!$this->getConfig()->isDebug() && current($message->getTo()) == $this->getConfig()->get('site.email')) {
             return;
         }
 
-        $mailLog = \Tk\Ml\Db\MailLog::createFromMessage($message);
+        $mailLog = $event->get('mailLog');
+        if (!$mailLog) {
+            $mailLog = \Tk\Ml\Db\MailLog::createFromMessage($message);
+            $event->set('mailLog', $mailLog);
+        }
         $mailLog->save();
     }
 
