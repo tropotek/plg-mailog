@@ -26,7 +26,7 @@ Or add the following to your composer.json file:
 
 ```json
 {
-  "uom-plg/mailog": "~1.0"
+  "uom-plg/mailog": "~3.0"
 }
 ```
 
